@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="Scan"
+  android:icon="@drawable/ic_baseline_qr_code_scannervector"
+        android:id="@+id/scanFragment"
+        />
+
+    <item android:title="Create"
+    android:icon="@drawable/ic_baseline_add_box_24"
+        android:id="@+id/createFragment"/>
+
+    <item android:title="History"
+         android:icon="@drawable/ic_baseline_historyvector"
+        android:id="@+id/historyFragment"/>
+
+    <item android:title="favourites"
+        android:icon="@drawable/ic_baseline_favorite_border_24"
+        android:id="@+id/favouritesFragment"/>
+
+    <item android:title="settings"
+        android:icon="@drawable/ic_baseline_settingsvector"
+        android:id="@+id/settingsFragment"/>
+
+
+</menu>

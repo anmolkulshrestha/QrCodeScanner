@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<com.google.android.material.card.MaterialCardView
+    android:layout_width="match_parent"
+    app:strokeWidth="3dp"
+    app:strokeColor="#8AEC8A"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:gravity="center"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Privacy Policy" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:orientation="vertical">
+                <TextView
+                    android:textSize="15dp"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="15dp"
+                    android:text=
+                   " This Privacy  Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.
+                We use Your Personal data to provide and improve the Service. By using the Service, you agree to the collection and use of information in accordance with this Privacy Policy."
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:text=""
+
+
+
+                    />
+
+
+
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="15dp"
+                    android:textSize="25dp"
+                    android:textStyle="bold"
+                    android:text="Interpretation and Definations" />
+
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="15dp"
+                    android:text="Interpretation" />
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="25dp"
+                    android:layout_marginTop="15dp"
+                    android:textStyle="bold"
+                    android:text="The words of which the initial letter is capitalized have meanings defined under the following conditions.
+The following definitions shall have the same meaning regardless of whether they appear in singular or in plural." />
+
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:layout_marginTop="15dp"
+                    android:text="Definations"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="For the purpose of this privacy policy"
+                android:textSize="25dp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginTop="15dp"
+                android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:layout_marginTop="15dp"
+                    android:text="You means the individual accessing or using the Service, or the company, or other legal entity on behalf of which such individual is accessing or using the Service, as applicable.
+Under GDPR (General Data Protection Regulation), You can be referred to as the Data Subject or as the User as you are the individual using the Service.
+"
+
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text='Company (referred to as either "the Company", "We", "Us" or "Our" in this Agreement) refers to AKRURA PTE. LTD.
+For the purpose of the GDPR, the Company is the Data Controller.'
+
+
+                android:textColor="@color/black"
+                    android:textSize="25dp"
+                    android:textStyle="bold"
+                android:layout_marginTop="15dp"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text=
+                    "Application means the software program provided by the Company downloaded by You on any electronic device, named Free QR Code Scanner."
+
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"/>
+<TextView
+    android:layout_width="wrap_content"
+
+    android:text=
+
+        'Affiliate means an entity that controls, is controlled by or is under common control with a party, where "control" means ownership of 50% or more of the shares, equity interest or other securities entitled to vote for election of directors or other managing authority.'
+
+
+
+    android:textStyle="bold"
+    android:textColor="@color/black"
+    android:layout_marginTop="15dp"
+    android:textSize="25dp"
+    android:layout_height="wrap_content"/>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:layout_marginTop="15dp"
+                    android:text=
+                    'Account means a unique account created for You to access our Service or parts of our Service.'
+                    android:layout_height="wrap_content"/>
+<TextView
+    android:layout_width="wrap_content"
+
+
+    android:text=
+        "Service refers to the Application"
+
+
+    android:textStyle="bold"
+    android:textColor="@color/black"
+    android:textSize="25dp"
+    android:layout_marginTop="15dp"
+    android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:layout_marginTop="15dp"
+
+
+                    android:text=
+                        "Country refers to:United States"
+
+
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_width="wrap_content"
+
+
+                    android:text=
+
+                        "Service Provider means any natural or legal person who processes the data on behalf of the Company. It refers to third-party companies or individuals employed by the Company to facilitate the Service, to provide the Service on behalf of the Company, to perform services related to the Service or to assist the Company in analyzing how the Service is used.
+For the purpose of the GDPR, Service Providers are considered Data Processors"
+
+
+                    android:textColor="@color/black"
+
+                    android:textSize="25dp"
+                    android:layout_marginTop="15dp"
+                    android:textStyle="bold"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:layout_marginTop="15dp"
+
+                    android:text=
+
+                        "Third-party Social Media Service refers to any website or any social network website through which a User can log in or create an account to use the Service. \n
+Personal Data is any information that relates to an identified or identifiable individual.
+For the purposes for GDPR, Personal Data means any information relating to You such as a name, an identification number, location data, online identifier or to one or more factors specific to the physical, physiological, genetic, mental, economic, cultural or social identity.
+For the purposes of the CCPA, Personal Data means any information that identifies, relates to, describes or is capable of being associated with, or could reasonably be linked, directly or indirectly, with You.
+\n Device means any device that can access the Service such as a computer, a cellphone or a digital tablet.
+\n Usage Data refers to data collected automatically, either generated by the use of the Service or from the Service infrastructure itself (for example, the duration of a page visit).
+\n Data Controller, for the purposes of the GDPR (General Data Protection Regulation), refers to the Company as the legal person which alone or jointly with others determines the purposes and means of the processing of Personal Data.
+\nDo Not Track (DNT) is a concept that has been promoted by US regulatory authorities, in particular the U.S. Federal Trade Commission (FTC), for the Internet industry to develop and implement a mechanism for allowing internet users to control the tracking of their online activities across websites.
+\nBusiness, for the purpose of the CCPA (California Consumer Privacy Act), refers to the Company as the legal entity that collects Consumers' personal information and determines the purposes and means of the processing of Consumers' personal information, or on behalf of which such information is collected and that alone, or jointly with others, determines the purposes and means of the processing of consumers' personal information, that does business in the State of California.
+\nConsumer, for the purpose of the CCPA (California Consumer Privacy Act), means a natural person who is a California resident. A resident, as defined in the law, includes (1) every individual who is in the USA for other than a temporary or transitory purpose, and (2) every individual who is domiciled in the USA who is outside the USA for a temporary or transitory purpose.
+\nSale, for the purpose of the CCPA (California Consumer Privacy Act), means selling, renting, releasing, disclosing, disseminating, making available, transferring, or otherwise communicating orally, in writing, or by electronic or other means, a Consumer's Personal information to another business or a third party for monetary or other valuable consideration.
+\nCollecting and Using Your Personal Data
+\nTypes of Data Collected
+\nPersonal Data
+While using Our Service, We may ask You to provide Us with certain personally identifiable information that can be used to contact or identify You.
+General Information. When you sign up to use the App, we may collect Personal data about you such as:
+Email address
+First name and last name
+Phone number
+Gender
+Password or passcode
+Usage Data
+Health data. When you use the App, you may choose to provide personal information about your health such as:
+Weight
+Height
+Body temperature;
+Menstrual cycle;
+Symptoms;
+Other information about your health (including sexual activities), and related activities.
+\nUsage Data
+Usage Data is collected automatically when using the Service.
+Usage Data may include information such as Your Device's Internet Protocol address (e.g. IP address), browser type, browser version, the pages of our Service that You visit, the time and date of Your visit, the time spent on those pages, unique device identifiers and other diagnostic data.
+When You access the Service by or through a mobile device, We may collect certain information automatically, including, but not limited to, the type of mobile device You use, Your mobile device unique ID, the IP address of Your mobile device, Your mobile operating system, the type of mobile Internet browser You use, unique device identifiers and other diagnostic data.
+We may also collect information that Your browser sends whenever You visit our Service or when You access the Service by or through a mobile device, below list can provide a non-exclusive list of the contents of Usage Data:
+Hardware model;
+Information about operating system and its version;
+Screen size and density;
+Language and country;
+Unique device identifiers (e.g. IDFA);
+Time zone;
+Device mute status (related to reminder function)
+In order to provide a better user experience, we have integrated data statistics tools in the App, they won't collect users’ health data or privacy data and are only used for CRASH targeting and AB-testing for new features and design， The details are as follows:
+Device information
+Screen Size
+OEM Name
+Model
+Device system information
+OS Name
+OS Version
+OS Build
+Time Zone
+System Language
+Carrier Country
+Carrier Name
+Location information
+Locale
+Country Area
+Application information
+App Name
+App Build
+APP Version Number
+SDK Name
+SDK Version
+\n  Information from Third-Party Social Media Services
+The Company allows You to create an account and log in to use the Service through the following Third-party Social Media Services:
+Google
+Facebook
+If You decide to register through or otherwise grant us access to a Third-Party Social Media Service, We may collect Personal data that is already associated with Your Third-Party Social Media Service's account, such as Your name, Your email address, Your activities or Your contact list associated with that account.
+You may also have the option of sharing additional information with the Company through Your Third-Party Social Media Service's account. If You choose to provide such information and Personal Data, during registration or otherwise, You are giving the Company permission to use, share, and store it in a manner consistent with this Privacy Policy.
+
+\n Your Consent and Our Use of Your Personal Data
+By creating a profile or registering to use our apps, you expressly agree to:
+We may process the health data you provide by using the app to import or export the data with third-party services, such as Apple HealthKit and Google Fit.
+We may process the account data you provide by using the app and create it through your account only for the purposes of login or registration, third-party services, such as Apple ID, Google account and Facebook account.
+Except as provided in this privacy policy, we will not transfer any of your personal data to third parties.
+The Company may use Personal Data for the following purposes:
+
+\n To provide and maintain our Service, including to monitor the usage of our Service.
+\n To manage Your Account: to manage Your registration as a user of the Service. The Personal Data You provide can give You access to different functionalities of the Service that are available to You as a registered user.
+\n For the performance of a contract: the development, compliance and undertaking of the purchase contract for the products, items or services You have purchased or of any other contract with Us through the Service.
+\n To contact You: To contact You by email, or other equivalent forms of electronic communication, such as a mobile application's push notifications regarding updates or informative communications related to the functionalities, products or contracted services, including the security updates, when necessary or reasonable for their implementation.
+\n To provide You with news, special offers and general information about other goods, services and events which we offer that are similar to those that you have already purchased or enquired about unless You have opted not to receive such information.
+\n To manage Your requests: To attend and manage Your requests to Us.
+\n We may share your personal information in the following situations:
+\n With Service Providers: We may share Your personal information with Service Providers to monitor and analyze the use of our Service, to show advertisements to You to help support and maintain Our Service, to advertise on third party websites to You after You visited our Service, for payment processing, to contact You.
+\n For examples, As your consent at the registration screen, we may import into the App Personal data about your health and activities from third-party services such as Apple HealthKit and Google Fit. The imported Personal data may include: weight, body temperature, calories burnt, heartbeat rate, number of steps/distance traveled, and other data about your health. We will handle any such third-party information in accordance with this Privacy Policy.
+\n Forums Cookies (Webview browser cookies) - Forum Cookies generally are used to deliver or optimize our services, to communicate with users or manage their forum accounts, to develop content, or for the purposes of research and analysis. you may refuse to accept browser cookies by activating the appropriate setting. However, if you select this setting you may be unable to access certain parts of our services.
+
+
+
+
+
+
+
+
+
+
+"
+
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="Contact Us"
+                    android:textSize="25dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="15dp"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:linksClickable="true"
+                    android:text="If you have any questions or suggestions about my privacy policy do not hesitate to contact me at softwarevission12345@gmail.com"
+                    android:textSize="15dp"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="15dp"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/scanFragment">
+
+    <fragment
+        android:id="@+id/scanFragment"
+        android:name="com.example.qrcodescanner.fragments.ScanFragment"
+        android:label="scan"
+        tools:layout="@layout/fragment_scan" >
+        <action
+            android:id="@+id/action_scanFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_scanFragment_to_createFragment"
+            app:destination="@id/createFragment" />
+        <action
+            android:id="@+id/action_scanFragment_to_historyFragment"
+            app:destination="@id/historyFragment" />
+        <action
+            android:id="@+id/action_scanFragment_to_viewScannedBarcodeFragment"
+            app:destination="@id/viewScannedBarcodeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.qrcodescanner.fragments.SettingsFragment"
+        android:label="Settings"
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settingsFragment_to_scanFragment"
+            app:destination="@id/scanFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_createFragment"
+            app:destination="@id/createFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_historyFragment"
+            app:destination="@id/historyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="com.example.qrcodescanner.fragments.HistoryFragment"
+        android:label="History"
+        tools:layout="@layout/fragment_history" >
+        <action
+            android:id="@+id/action_historyFragment_to_scanFragment"
+            app:destination="@id/scanFragment" />
+        <action
+            android:id="@+id/action_historyFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_historyFragment_to_viewScannedBarcodeFragment"
+            app:destination="@id/viewScannedBarcodeFragment" />
+        <action
+            android:id="@+id/action_historyFragment_to_viewScannedBarcodeFragment2"
+            app:destination="@id/viewScannedBarcodeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createFragment"
+        android:name="com.example.qrcodescanner.fragments.CreateFragment"
+        android:label="Create Barcode"
+        tools:layout="@layout/fragment_create" >
+        <action
+            android:id="@+id/action_createFragment_to_scanFragment"
+            app:destination="@id/scanFragment" />
+        <action
+            android:id="@+id/action_createFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_createFragment_to_generateBarcodeFragment"
+            app:destination="@id/generateBarcodeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewScannedBarcodeFragment"
+        android:name="com.example.qrcodescanner.fragments.ViewScannedBarcodeFragment"
+        android:label="Barcode"
+        tools:layout="@layout/fragment_view_scanned_barcode" >
+        <action
+            android:id="@+id/action_viewScannedBarcodeFragment_to_scanFragment"
+            app:destination="@id/scanFragment" />
+        <action
+            android:id="@+id/action_viewScannedBarcodeFragment_to_historyFragment"
+            app:destination="@id/historyFragment" />
+        <argument
+            android:name="custombarcode"
+            app:argType="com.example.qrcodescanner.models.CustomBarcode" />
+        <action
+            android:id="@+id/action_viewScannedBarcodeFragment_to_generateBarcodeFragment"
+            app:destination="@id/generateBarcodeFragment" />
+        <action
+            android:id="@+id/action_viewScannedBarcodeFragment_to_scanedFragment"
+            app:destination="@id/scanedFragment" />
+        <action
+            android:id="@+id/action_viewScannedBarcodeFragment_to_favouritesFragment"
+            app:destination="@id/favouritesFragment" />
+        <action
+            android:id="@+id/action_viewScannedBarcodeFragment_to_createdFragment"
+            app:destination="@id/createdFragment" />
+        <action
+            android:id="@+id/action_viewScannedBarcodeFragment_to_historyFragment2"
+            app:destination="@id/historyFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/generateBarcodeFragment"
+        android:name="com.example.qrcodescanner.fragments.GenerateBarcodeFragment"
+
+        tools:layout="@layout/fragment_generate_barcode" >
+        <action
+            android:id="@+id/action_generateBarcodeFragment_to_createFragment"
+            app:destination="@id/createFragment" />
+        <action
+            android:id="@+id/action_generateBarcodeFragment_to_viewScannedBarcodeFragment"
+            app:destination="@id/viewScannedBarcodeFragment" />
+        <argument
+            android:name="createbarcodeoption"
+            app:argType="com.example.qrcodescanner.models.CreateBarcodeOption" />
+        <action
+            android:id="@+id/action_generateBarcodeFragment_to_finalGeneartedBarcodeFragment"
+            app:destination="@id/finalGeneartedBarcodeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/finalGeneartedBarcodeFragment"
+        android:name="com.example.qrcodescanner.FinalGeneartedBarcodeFragment"
+        android:label="Save-Share"
+        tools:layout="@layout/fragment_final_genearted_barcode" >
+        <action
+            android:id="@+id/action_finalGeneartedBarcodeFragment_to_generateBarcodeFragment"
+            app:destination="@id/generateBarcodeFragment"
+
+           />
+        <argument
+            android:name="barcodestring"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/scanedFragment"
+        android:name="com.example.qrcodescanner.ScanedFragment"
+        android:label="Scanned History"
+        tools:layout="@layout/fragment_scaned" >
+        <action
+            android:id="@+id/action_scanedFragment_to_viewScannedBarcodeFragment"
+            app:destination="@id/viewScannedBarcodeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createdFragment"
+        android:name="com.example.qrcodescanner.CreatedFragment"
+        android:label="Created History"
+        tools:layout="@layout/fragment_created" >
+        <action
+            android:id="@+id/action_createdFragment_to_viewScannedBarcodeFragment"
+            app:destination="@id/viewScannedBarcodeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/favouritesFragment"
+        android:name="com.example.qrcodescanner.FavouritesFragment"
+        android:label="Favourites"
+        tools:layout="@layout/fragment_favourites" >
+        <action
+            android:id="@+id/action_favouritesFragment_to_viewScannedBarcodeFragment"
+            app:destination="@id/viewScannedBarcodeFragment" />
+        <action
+            android:id="@+id/action_favouritesFragment_self"
+            app:destination="@id/favouritesFragment" />
+    </fragment>
+</navigation>
