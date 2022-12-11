@@ -1,4 +1,4 @@
-package com.example.qrcodescanner.featureslist
+package com.example.qrcodescanner.utils
 
 import android.content.*
 import android.content.Context.WIFI_SERVICE
@@ -9,9 +9,11 @@ import android.net.wifi.WifiManager
 import android.os.Build
 import android.provider.ContactsContract
 import android.provider.MediaStore
+import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
 import androidx.camera.core.impl.utils.ContextUtil.getApplicationContext
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.FileProvider
 import com.example.qrcodescanner.models.BarcodeTile
@@ -37,43 +39,37 @@ inline fun <T> sdk30AndUp(onSdk30:()->T):T?{
 class FeaturesOptions {
 
 
-        fun call(tel:String,context: Context){
+    fun call(tel:String,context: Context){
             val intent = Intent(Intent.ACTION_DIAL)
             intent.data = Uri.parse("tel:$tel")
             startActivity(context,intent,null)
 
         }
 
-       fun sendSms(smsTel:String,message:String,context: Context){
+    fun sendSms(smsTel:String,message:String,context: Context){
            val uri = Uri.parse("smsto:$smsTel")
            val intent = Intent(Intent.ACTION_SENDTO, uri)
            intent.putExtra("sms_body", "$message")
            startActivity(context,intent,null)
        }
     fun addToContacts(phoneNo:String,name:String,context: Context){
-        // Creates a new Intent to insert a contact
+
         val intent = Intent(ContactsContract.Intents.Insert.ACTION).apply {
-            // Sets the MIME type to match the Contacts Provider
+
             type = ContactsContract.RawContacts.CONTENT_TYPE
         }
 
         intent.apply {
-            // Inserts an email address
+
             putExtra(ContactsContract.Intents.Insert.EMAIL, "")
-            /*
-             * In this example, sets the email type to be a work email.
-             * You can set other email types as necessary.
-             */
+
             putExtra(
                 ContactsContract.Intents.Insert.EMAIL_TYPE,
                 ContactsContract.CommonDataKinds.Email.TYPE_WORK
             )
-            // Inserts a phone number
+
             putExtra(ContactsContract.Intents.Insert.PHONE, phoneNo)
-            /*
-             * In this example, sets the phone type to be a work phone.
-             * You can set other phone types as necessary.
-             */
+
             putExtra(
                 ContactsContract.Intents.Insert.PHONE_TYPE,
                 ContactsContract.CommonDataKinds.Phone.TYPE_WORK
@@ -82,10 +78,7 @@ class FeaturesOptions {
         startActivity(context,intent,null)
     }
 
-      fun connectToWifi(ssid:String,encytionType:String,password:String,context: Context){
 
-
-   }
 
     fun composeEmail(addresses: String, subject: String, message:String,context: Context) {
         val intent = Intent(Intent.ACTION_SEND).apply {
@@ -130,6 +123,21 @@ class FeaturesOptions {
         }
 
     }
+    fun  openInstagram(username:String,context: Context){
+        try {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data =
+                Uri.parse("http://instagram.com/$username")
+            startActivity(context,intent,null)
+        } catch (e:java.lang.Exception) {
+            Toast.makeText(
+                context,
+                "Instagram app not installed on your device",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
+    }
 
     fun Copy(barcodeTileList:MutableList<BarcodeTile>,context: Context){
 
@@ -147,33 +155,8 @@ class FeaturesOptions {
 
     }
    fun connecttowifi(context:Context){
-       val networkSSID = "test"
-       val networkPass = "pass"
-
-       val conf = WifiConfiguration()
-       conf.SSID = "\"" + networkSSID + "\""
-
-
-       conf.wepKeys[0] = "\"" + networkPass + "\"";
-       conf.wepTxKeyIndex = 0;
-       conf.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
-       conf.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP40);
-
-
-
-
-
-
-
-       val wifiManager = context.getSystemService(WIFI_SERVICE) as WifiManager?
-
-//remember id
-//remember id
-       val netId = wifiManager!!.addNetwork(conf)
-       wifiManager!!.disconnect()
-       wifiManager!!.enableNetwork(netId, true)
-       wifiManager!!.reconnect()
-
+       var intent=Intent(Settings.ACTION_WIFI_SETTINGS)
+       startActivity(context,intent,null)
    }
 
 
@@ -191,18 +174,16 @@ class FeaturesOptions {
                 put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
                 put(MediaStore.Images.Media.WIDTH, bmp.width)
                 put(MediaStore.Images.Media.HEIGHT, bmp.height)
-              //  put(MediaStore.Images.Media.RELATIVE_PATH,"Pictures/QrCodeScanner")
-             //    put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/" + "QrCodeScannerrr")
 
             }
             try {
-                Log.d("eer", "eer3")
+
                 context.contentResolver.insert(imageCollection, contentValues)?.also { uri ->
-                    Log.d("eer", "eer4")
+
                     context.contentResolver.openOutputStream(uri).use { outputStream ->
-                        Log.d("eer", "eer5")
+
                         if(!bmp.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)) {
-                            Log.d("eer", "eer6")
+
                             throw IOException("Couldn't save bitmap")
                         }
                     }
@@ -260,6 +241,20 @@ class FeaturesOptions {
             Toast.makeText(context,"There is No email app in your device",Toast.LENGTH_SHORT)
         }
     }
+fun sharedPreferences(context: Context):Boolean{
+    context.getSharedPreferences("SAVE_HISTORY",
+        Context.MODE_PRIVATE).let { sharedPreferences ->
+        if(sharedPreferences.contains("isSaveHistory")){
+         return sharedPreferences.getBoolean("isSaveHistory",true)
 
+        }else{
+            sharedPreferences.edit().putBoolean("isSaveHistory",true)
+           return true
+
+
+
+        }
+    }
+}
 
 }

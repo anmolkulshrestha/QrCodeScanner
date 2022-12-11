@@ -14,7 +14,7 @@ enum class BarcodeTypes(var nameofitem:String="") {
     TYPE_CONTACT_INFO("contact"),
     TYPE_CALENDAR_EVENT("calendar"),
     TYPE_MYCARD("my-card"),
-    TYPE_WHATSAPP("event"),
+    TYPE_WHATSAPP("whatsapp"),
     TYPE_INSTAGRAM("instagram"),
     TYPE_TWITTER("twitter"),
     TYPE_PAYPAL("paypal")

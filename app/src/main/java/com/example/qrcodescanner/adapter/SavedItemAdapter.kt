@@ -1,27 +1,18 @@
 package com.example.qrcodescanner.adapter
 
 import android.content.Context
-import android.icu.text.MessageFormat.format
 import android.text.format.DateFormat
-import android.text.format.DateFormat.format
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.recyclerview.selection.ItemDetailsLookup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.qrcodescanner.R
-import com.example.qrcodescanner.SavedItemClickHnadler
-import com.example.qrcodescanner.database.BarcodeDatabase
+import com.example.qrcodescanner.listeners.SavedItemClickHnadler
 import com.example.qrcodescanner.models.BarcodeForDatabase
-import com.example.qrcodescanner.models.BarcodeTile
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 
 class SavedItemAdapter(savedItemClickHnadler: SavedItemClickHnadler): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -81,7 +72,10 @@ class SavedItemAdapter(savedItemClickHnadler: SavedItemClickHnadler): RecyclerVi
         }
         holder.delete.setOnClickListener {
             clickHnadler.deleteclick(savedbarcode)
-            Log.d("lkjhg", "delete")
+
+
+
+
 
         }
 

@@ -1,16 +1,16 @@
 package com.example.qrcodescanner.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.qrcodescanner.FeatureClickHandler
+import com.example.qrcodescanner.listeners.FeatureClickHandler
 import com.example.qrcodescanner.R
 import com.example.qrcodescanner.models.BarcodeFeatures
-import com.example.qrcodescanner.models.BarcodeTile
 
 class ScannedBarcodeFeaturesAdapter(clickHandler: FeatureClickHandler): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     lateinit var context: Context

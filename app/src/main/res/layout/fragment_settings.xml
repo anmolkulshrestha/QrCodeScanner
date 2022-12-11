@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="20dp"
                 android:layout_weight="1"
-                android:text="Don't Save In History"
+                android:text="Save In History"
                 android:textColor="@color/black"
                 android:textSize="20dp"
 
@@ -45,35 +45,6 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:layout_editor_absoluteY="187dp" />
-
-            <TextView
-                android:id="@+id/about"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="20dp"
-                android:layout_weight="1"
-                android:text="About"
-                android:textColor="@color/black"
-                android:textSize="20dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:layout_editor_absoluteY="113dp" />
-
-            <TextView
-                android:id="@+id/privacypolicy"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="20dp"
-                android:layout_marginTop="4dp"
-                android:layout_weight="1"
-                android:text="Privacy Policy"
-                android:textColor="@color/black"
-                android:textSize="20dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/contactus"

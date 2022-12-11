@@ -1,40 +1,33 @@
-package com.example.qrcodescanner
+package com.example.qrcodescanner.fragments
 
 import android.content.pm.ActivityInfo
 import android.os.Bundle
-import android.provider.ContactsContract.CommonDataKinds.Im
+
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
+
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
+
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.qrcodescanner.R
 import com.example.qrcodescanner.adapter.SavedItemAdapter
-import com.example.qrcodescanner.database.BarcodeDatabase
-import com.example.qrcodescanner.fragments.HistoryFragmentDirections
+
+import com.example.qrcodescanner.listeners.SavedItemClickHnadler
 import com.example.qrcodescanner.models.BarcodeForDatabase
 import com.example.qrcodescanner.models.CustomBarcode
 import com.example.qrcodescanner.viewmodels.ScannedHistoryViewModel
-import kotlinx.android.synthetic.main.fragment_scaned.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 
 class ScanedFragment : Fragment() {
     lateinit var scannedBarcodeListRecyclerView:RecyclerView
 
     private   val scannedBarcodesViewModel:ScannedHistoryViewModel by activityViewModels()
-    private val myAdapter:SavedItemAdapter =SavedItemAdapter( object:SavedItemClickHnadler{
+    private val myAdapter:SavedItemAdapter =SavedItemAdapter( object: SavedItemClickHnadler {
         override fun handleclickisfavourite(barcode: BarcodeForDatabase) {
 
             scannedBarcodesViewModel.updateIsFavourite(barcode)
@@ -54,7 +47,7 @@ class ScanedFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("bhen", "onCreted")
+
 
     }
 
@@ -63,10 +56,8 @@ class ScanedFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         Log.d("bhen", "onCretedView")
-        // Inflate the layout for this fragment
-        var view= inflater.inflate(R.layout.fragment_scaned, container, false)
 
- //       scannedBarcodesViewModel=ViewModelProvider(requireActivity()).get(ScannedHistoryViewModel::class.java)
+        var view= inflater.inflate(R.layout.fragment_scaned, container, false)
 
         scannedBarcodeListRecyclerView=view.findViewById(R.id.scannedhistory)
 
@@ -77,7 +68,6 @@ class ScanedFragment : Fragment() {
 
         requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
 
-     //   scannedBarcodesViewModel=ViewModelProvider(this).get(ScannedHistoryViewModel::class.java)
 
         return view
     }
@@ -92,11 +82,9 @@ class ScanedFragment : Fragment() {
 
 
 
-            for(item in it){
-                Log.d("whynow", item.toString())
-            }
+
         })
-        Log.d("bhen", "onCretedpappu")
+
 
 
 

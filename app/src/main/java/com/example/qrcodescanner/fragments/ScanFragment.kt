@@ -22,38 +22,35 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
-import androidx.core.app.ActivityCompat.startActivityForResult
-import androidx.core.content.ContentProviderCompat.requireContext
+
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.qrcodescanner.R
-import com.example.qrcodescanner.featureslist.FeaturesOptions
-import com.example.qrcodescanner.lumalistener
+
+import com.example.qrcodescanner.listeners.lumalistener
 import com.example.qrcodescanner.models.CustomBarcode
+import com.example.qrcodescanner.utils.FeaturesOptions
 import com.example.qrcodescanner.utils.LuminosityAnalyzer
 import com.example.qrcodescanner.utils.Scanner
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.card.MaterialCardView
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.common.util.concurrent.ListenableFuture
-import com.google.mlkit.vision.barcode.BarcodeScannerOptions
-import com.google.mlkit.vision.barcode.BarcodeScanning
-import com.google.mlkit.vision.barcode.common.Barcode
+
 import com.google.mlkit.vision.common.InputImage
-import kotlinx.android.synthetic.main.fragment_final_genearted_barcode.*
-import java.io.IOException
+
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 const val REQUEST_IMAGE_OPEN = 1
 class ScanFragment : Fragment() {
 
-     lateinit var imageAnalysis: ImageAnalysis
-     var isCameraPermissionGranted=false
-     lateinit var permissionLauncher:ActivityResultLauncher<Array<String>>
-     lateinit var camera_preview:PreviewView
-     lateinit var switchcamera:FloatingActionButton
+    lateinit var imageAnalysis: ImageAnalysis
+    var isCameraPermissionGranted=false
+    lateinit var permissionLauncher:ActivityResultLauncher<Array<String>>
+    lateinit var camera_preview:PreviewView
+    lateinit var switchcamera:FloatingActionButton
     lateinit var flashlight:FloatingActionButton
     lateinit var scangallery:FloatingActionButton
     lateinit var cameraProviderFuture:ListenableFuture<ProcessCameraProvider>
@@ -68,20 +65,20 @@ class ScanFragment : Fragment() {
    var cameraSelector: CameraSelector=CameraSelector.DEFAULT_BACK_CAMERA
     lateinit var camera:Camera
 
-   //  lateinit var materialCard:MaterialCardView
+
      private lateinit var cameraExecutor: ExecutorService
      override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
          requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-        // Inflate the layout for this fragment
+
        var view= inflater.inflate(R.layout.fragment_scan, container, false)
-     //   materialCard=view.findViewById<MaterialCardView?>(R.id.materialcard)
+
         scangallery=view.findViewById(R.id.scangallery)
          flashlight=view.findViewById(R.id.flashlight)
          switchcamera=view.findViewById(R.id.switchcamera)
-   FeaturesOptions().connecttowifi(requireContext())
+ //  FeaturesOptions().connecttowifi(requireContext())
         camera_preview=view.findViewById(R.id.camera_preview)
         permissionLauncher=registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){
                 permissions->
@@ -106,7 +103,7 @@ class ScanFragment : Fragment() {
 
         requestOrUpdatePermissions()
         startCamera()
-//      setTorchStateObserver()
+
         switchcamera.setOnClickListener {
 
             if (cameraSelector == CameraSelector.DEFAULT_FRONT_CAMERA ){
@@ -132,16 +129,7 @@ class ScanFragment : Fragment() {
 
     }
 
-    // toCheckPermissions
-//    private fun setTorchStateObserver() {
-//        cameraInfo?.torchState?.observe(requireActivity(), { state ->
-//            if (state == TorchState.ON) {
-//            flashlight.drawabl
-//            } else {
-//                flashlight.setImageResource(R.drawable.ic_share_foreground)
-//            }
-//        })
-//    }
+
     private fun toggleTorch() {
         if (cameraInfo?.torchState?.value == TorchState.ON) {
             cameraControl?.enableTorch(false)
@@ -153,7 +141,7 @@ class ScanFragment : Fragment() {
 
         isCameraPermissionGranted= ContextCompat.checkSelfPermission(
         requireContext(),Manifest.permission.CAMERA)== PackageManager.PERMISSION_GRANTED
-        Log.d("lalu", isCameraPermissionGranted.toString())
+
         val permissionrequest:MutableList<String> = ArrayList()
         if(!isCameraPermissionGranted) { permissionrequest.add(Manifest.permission.CAMERA) }
         if(permissionrequest.isNotEmpty()){ permissionLauncher.launch(permissionrequest.toTypedArray()) }
@@ -165,7 +153,7 @@ var inputImage:InputImage=InputImage.fromFilePath(requireContext(), uri)
 
 
 
-        Scanner().scan(object:lumalistener{
+        Scanner().scan(object: lumalistener {
             override fun sendScannedBarcodeItem(obj: CustomBarcode) {
                 findNavController().navigate(ScanFragmentDirections.actionScanFragmentToViewScannedBarcodeFragment(obj))
             }
@@ -194,13 +182,13 @@ var inputImage:InputImage=InputImage.fromFilePath(requireContext(), uri)
                 .also {
                     it.setAnalyzer(cameraExecutor, LuminosityAnalyzer(
 
-                       object :lumalistener{
+                       object : lumalistener {
                            override fun  sendScannedBarcodeItem(obj: CustomBarcode) {
 
                                findNavController().navigate(ScanFragmentDirections.actionScanFragmentToViewScannedBarcodeFragment(obj))
                                clearAnalyzer()
                            }
-                       },requireContext(),camera_preview.width.toFloat(),camera_preview.height.toFloat())
+                       },requireContext())
                     )
                 }
 
@@ -214,7 +202,7 @@ var inputImage:InputImage=InputImage.fromFilePath(requireContext(), uri)
 
 
             } catch(exc: Exception) {
-                Log.e("l", "Use case binding failed", exc)
+
             }
             cameraControl = camera.cameraControl
             cameraInfo = camera.cameraInfo
@@ -236,7 +224,7 @@ var inputImage:InputImage=InputImage.fromFilePath(requireContext(), uri)
         if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
            thumbnail = data!!.getParcelableExtra("data")
              fullPhotoUri = data!!.data
-            Log.d("photos", fullPhotoUri.toString())
+
            scanBarcodeFromImage(fullPhotoUri!!)
 
         }

@@ -6,17 +6,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
+
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.qrcodescanner.CreateOptionClickHandler
+import com.example.qrcodescanner.listeners.CreateOptionClickHandler
 import com.example.qrcodescanner.R
 import com.example.qrcodescanner.adapter.CreateBarcodeOptionsAdapter
 import com.example.qrcodescanner.models.CreateBarcodeOption
-import com.example.qrcodescanner.viewmodels.ScannedHistoryViewModel
+
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.android.synthetic.main.fragment_create.*
+
 
 
 class CreateFragment : Fragment() {
@@ -43,7 +43,7 @@ class CreateFragment : Fragment() {
         createBarcodeOptionsRecyclerView=view.findViewById(R.id.createBarcodeOptions)
         initializeCreateBarcodeOptionsList()
         var featuresLayoutManager= GridLayoutManager(activity,4)
-        var optionadapter=CreateBarcodeOptionsAdapter(object:CreateOptionClickHandler{
+        var optionadapter=CreateBarcodeOptionsAdapter(object: CreateOptionClickHandler {
             override fun createBarcodeOptionClickHandler(createBarcodeOption: CreateBarcodeOption) {
                 findNavController().navigate(CreateFragmentDirections.actionCreateFragmentToGenerateBarcodeFragment(createBarcodeOption))
                 createBrcodeOptionsList.clear()

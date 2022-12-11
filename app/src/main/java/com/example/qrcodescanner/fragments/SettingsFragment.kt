@@ -1,6 +1,7 @@
 package com.example.qrcodescanner.fragments
 
 import android.app.Dialog
+import android.content.Context
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,8 +11,11 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.Switch
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.content.edit
 import com.example.qrcodescanner.R
-import com.example.qrcodescanner.featureslist.FeaturesOptions
+
+import com.example.qrcodescanner.utils.FeaturesOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
@@ -19,8 +23,7 @@ class SettingsFragment : Fragment() {
 
     lateinit var history: Switch
     lateinit var contactus: TextView
-    lateinit var privacypolicy: TextView
-    lateinit var about: TextView
+
 
 
     lateinit var privacypolicyDialog: Dialog
@@ -45,16 +48,48 @@ class SettingsFragment : Fragment() {
 
        history = view.findViewById(R.id.savehistory)
         contactus = view.findViewById(R.id.contactus)
-        privacypolicy = view.findViewById(R.id.privacypolicy)
-        about = view.findViewById(R.id.about)
+//        privacypolicy = view.findViewById(R.id.privacypolicy)
+//        about = view.findViewById(R.id.about)
+      requireContext().getSharedPreferences("SAVE_HISTORY",
+            Context.MODE_PRIVATE).let { sharedPreferences ->
+            if(sharedPreferences.contains("isSaveHistory")){
+              ishistory=  sharedPreferences.getBoolean("isSaveHistory",true)
 
+            }else{
+            sharedPreferences.edit().putBoolean("isSaveHistory",true)
+                ishistory=true
+
+
+
+            }
+        }
+        history.isChecked=ishistory
         setUpPrivacyPolicyDialog()
         contactus.setOnClickListener {
             FeaturesOptions().sendemail(requireContext())
         }
-        privacypolicy.setOnClickListener { privacypolicyDialog.show() }
+        //privacypolicy.setOnClickListener { privacypolicyDialog.show() }
+
+      history.setOnCheckedChangeListener { compoundButton, b ->
+          if(history.isChecked){
+              Toast.makeText(requireContext(),"Saved Images and Videoes will not be availabe in Gallery of Phone to protect your privacy", Toast.LENGTH_SHORT).show()
+              requireContext().getSharedPreferences("SAVE_HISTORY", Context.MODE_PRIVATE)
+                  .edit {
+                      putBoolean("isSaveHistory", true)
+                      ishistory = true
+                  }
 
 
+          }
+          else{
+
+              requireContext().getSharedPreferences("SAVE_HISTORY", Context.MODE_PRIVATE)
+                  .edit {
+                      putBoolean("isSaveHistory",false)
+                      ishistory = false
+                  }
+          }
+      }
         return view
     }
 

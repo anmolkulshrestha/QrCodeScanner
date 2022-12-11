@@ -6,16 +6,16 @@ import android.app.DatePickerDialog.OnDateSetListener
 import android.app.TimePickerDialog
 import android.app.TimePickerDialog.OnTimeSetListener
 import android.content.pm.ActivityInfo
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
+
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
+
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Spinner
@@ -29,14 +29,17 @@ import androidx.navigation.fragment.navArgs
 import com.example.qrcodescanner.R
 
 import com.example.qrcodescanner.database.BarcodeDatabase
+
 import com.example.qrcodescanner.models.BarcodeForDatabase
 import com.example.qrcodescanner.models.BarcodeTypes
 import com.example.qrcodescanner.models.CustomBarcode
+import com.example.qrcodescanner.utils.FeaturesOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
+
 import com.google.android.material.textfield.TextInputLayout
+
 import kotlinx.android.synthetic.main.fragment_generate_barcode.*
-import kotlinx.android.synthetic.main.fragment_generate_barcode.view.*
-import kotlinx.android.synthetic.main.fragment_view_scanned_barcode.*
+
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -272,31 +275,43 @@ class GenerateBarcodeFragment : Fragment() ,AdapterView.OnItemSelectedListener{
         (requireActivity() as AppCompatActivity).supportActionBar?.title = args.createbarcodeoption.createBarcodeOptionDesc.toString()
         var type = args.createbarcodeoption.createBarcodeOptionType.toString()
         when (type) {
-            "TYPE_WHATSAPP"->{
+           BarcodeTypes.TYPE_WHATSAPP.name->{
                 typeimage.setImageResource(R.drawable.icons8_whatsapp)
                 phoneNumber.visibility = View.VISIBLE
                 if (phoneNumber.editText!!.text.isNotEmpty()) {
                     barcodeString = "whatsapp://send?phone="+"${phoneNumber.editText!!.text}"
-                    customBarcode=CustomBarcode("TYPE_WHATSAPP")
-                    customBarcode.telephoneNumber=phoneNumber.editText!!.text.toString()
+                    customBarcode=CustomBarcode(BarcodeTypes.TYPE_URL.name)
+                    customBarcode.urlOfWebsite=barcodeString
 
-                    GlobalScope.launch(Dispatchers.IO) {
-                        try {
-                            customBarcode.isSaved=true
-                            BarcodeDatabase.getDatabase(requireContext()).barcodeDao().insertBarcode(
-                                BarcodeForDatabase(
-                                    R.drawable.icons8_whatsapp,customBarcode,BarcodeTypes.TYPE_WHATSAPP.nameofitem,System.currentTimeMillis(),false,false,phoneNumber.editText!!.text.toString()
-                              )
-                            )
-                        }catch (e:Exception){
-                            Log.d("roomsaveerror",e.toString() )
+                    customBarcode.barcodeFormattedText=barcodeString
+                    if(FeaturesOptions().sharedPreferences(requireContext())){
+                        GlobalScope.launch(Dispatchers.IO) {
+                            try {
+                                customBarcode.isSaved=true
+                                BarcodeDatabase.getDatabase(requireContext()).barcodeDao().insertBarcode(
+                                    BarcodeForDatabase(
+                                        R.drawable.icons8_whatsapp,customBarcode,BarcodeTypes.TYPE_WHATSAPP.nameofitem,System.currentTimeMillis(),false,false,phoneNumber.editText!!.text.toString()
+                                    )
+                                )
+                            }catch (e:Exception){
+                                withContext(Dispatchers.Main){
+                                    Toast.makeText(requireContext(),"Something went Wrong!",Toast.LENGTH_SHORT).show()
+
+                                }
+                            }
                         }
                     }
+
                     findNavController().navigate(
                         GenerateBarcodeFragmentDirections.actionGenerateBarcodeFragmentToFinalGeneartedBarcodeFragment(
                             barcodeString
                         )
-                    )}
+                    )}else{
+
+                        Toast.makeText(requireContext(),"Empty Tel",Toast.LENGTH_SHORT).show()
+
+
+                    }
 
 
             }
@@ -307,27 +322,34 @@ class GenerateBarcodeFragment : Fragment() ,AdapterView.OnItemSelectedListener{
                     barcodeString = "tel:${phoneNumber.editText!!.text}"
                     customBarcode=CustomBarcode(BarcodeTypes.TYPE_PHONE.name)
                     customBarcode.telephoneNumber=phoneNumber.editText!!.text.toString()
+                    customBarcode.barcodeFormattedText=barcodeString
 
                     findNavController().navigate(
                         GenerateBarcodeFragmentDirections.actionGenerateBarcodeFragmentToFinalGeneartedBarcodeFragment(
                             barcodeString
                         )
                     )
-                    GlobalScope.launch(Dispatchers.IO) {
+                    if(FeaturesOptions().sharedPreferences(requireContext())){
+                        GlobalScope.launch(Dispatchers.IO) {
 
-                        try{ customBarcode.isSaved=true
-                            BarcodeDatabase.getDatabase(requireContext()).barcodeDao().insertBarcode(
-                                BarcodeForDatabase(R.drawable.ic_baseline_callvector, customBarcode,BarcodeTypes.TYPE_PHONE.nameofitem,System.currentTimeMillis(),false,false,phoneNumber.editText!!.text.toString() )
-                               )
-                        }catch (e:Exception){
+                            try{ customBarcode.isSaved=true
+                                BarcodeDatabase.getDatabase(requireContext()).barcodeDao().insertBarcode(
+                                    BarcodeForDatabase(R.drawable.ic_baseline_callvector, customBarcode,BarcodeTypes.TYPE_PHONE.nameofitem,System.currentTimeMillis(),false,false,phoneNumber.editText!!.text.toString() )
+                                )
+                            }catch (e:Exception){
+withContext(Dispatchers.Main){
+    Toast.makeText(requireContext(),"Something went Wrong!",Toast.LENGTH_SHORT).show()
 
-                            Toast.makeText(requireContext(),"Something went Wrong!",Toast.LENGTH_SHORT).show()
+}
+
+                            }
 
                         }
-
                     }
 
+
                 }else{
+
 Toast.makeText(requireContext(),"Empty Tel",Toast.LENGTH_SHORT).show()
                 }
 
@@ -348,18 +370,24 @@ Toast.makeText(requireContext(),"Empty Tel",Toast.LENGTH_SHORT).show()
                     customBarcode.email=email.editText!!.text.toString()
                     customBarcode.subjectOfEmail=SubjectOfEmail.editText!!.text.toString()
                     customBarcode.contentOfEmail=emailBody.editText!!.text.toString()
+                    customBarcode.barcodeFormattedText=barcodeString
+                    if(FeaturesOptions().sharedPreferences(requireContext())){
+                        GlobalScope.launch(Dispatchers.IO) {
 
-                    GlobalScope.launch(Dispatchers.IO) {
-
-                        try {customBarcode.isSaved=true
-                            BarcodeDatabase.getDatabase(requireContext()).barcodeDao().insertBarcode(
-                                BarcodeForDatabase(R.drawable.ic_baseline_emailvector,customBarcode,BarcodeTypes.TYPE_EMAIL.nameofitem,System.currentTimeMillis(),false,false,email.editText!!.text.toString()
+                            try {customBarcode.isSaved=true
+                                BarcodeDatabase.getDatabase(requireContext()).barcodeDao().insertBarcode(
+                                    BarcodeForDatabase(R.drawable.ic_baseline_emailvector,customBarcode,BarcodeTypes.TYPE_EMAIL.nameofitem,System.currentTimeMillis(),false,false,email.editText!!.text.toString()
+                                    )
                                 )
-                            )
-                        }catch (e:Exception){
-                            Log.d("roomsaveerror",e.toString() )
+                            }catch (e:Exception){
+                                withContext(Dispatchers.Main){
+                                    Toast.makeText(requireContext(),"Something went Wrong!",Toast.LENGTH_SHORT).show()
+
+                                }
+                            }
                         }
                     }
+
                     findNavController().navigate(
                         GenerateBarcodeFragmentDirections.actionGenerateBarcodeFragmentToFinalGeneartedBarcodeFragment(
                             barcodeString
@@ -381,23 +409,33 @@ Toast.makeText(requireContext(),"Empty Tel",Toast.LENGTH_SHORT).show()
                     }
                customBarcode= CustomBarcode(BarcodeTypes.TYPE_URL.name)
                     customBarcode.urlOfWebsite=barcodeString
-                    GlobalScope.launch(Dispatchers.IO) {
-                        try {customBarcode.isSaved=true
-                            BarcodeDatabase.getDatabase(requireContext()).barcodeDao().insertBarcode(
-                                BarcodeForDatabase(R.drawable.web_search_4291,customBarcode,BarcodeTypes.TYPE_URL.nameofitem,System.currentTimeMillis(),false,false,barcodeString
+                    customBarcode.barcodeFormattedText=barcodeString
+                    if(FeaturesOptions().sharedPreferences(requireContext())){
+                        GlobalScope.launch(Dispatchers.IO) {
+                            try {customBarcode.isSaved=true
+                                BarcodeDatabase.getDatabase(requireContext()).barcodeDao().insertBarcode(
+                                    BarcodeForDatabase(R.drawable.web_search_4291,customBarcode,BarcodeTypes.TYPE_URL.nameofitem,System.currentTimeMillis(),false,false,barcodeString
+                                    )
                                 )
-                            )
-                        }catch (e:Exception){
+                            }catch (e:Exception){
+                                withContext(Dispatchers.Main){
+                                    Toast.makeText(requireContext(),"Something went Wrong!",Toast.LENGTH_SHORT).show()
 
-                            Toast.makeText(requireContext(),"Something went Wrong!",Toast.LENGTH_SHORT).show()
-
+                                }
+                            }
                         }
                     }
+
                     findNavController().navigate(
                         GenerateBarcodeFragmentDirections.actionGenerateBarcodeFragmentToFinalGeneartedBarcodeFragment(
                             barcodeString
                         )
                     )
+                }else{
+
+                        Toast.makeText(requireContext(),"Empty Fields",Toast.LENGTH_SHORT).show()
+
+
                 }
 
 
@@ -410,25 +448,29 @@ Toast.makeText(requireContext(),"Empty Tel",Toast.LENGTH_SHORT).show()
                     barcodeString ="twitter://user?screen_name=${Url.editText!!.text}"
                     customBarcode= CustomBarcode(BarcodeTypes.TYPE_URL.name)
                     customBarcode.urlOfWebsite=barcodeString
-                    GlobalScope.launch(Dispatchers.IO) {
-                        try {customBarcode.isSaved=true
-                            BarcodeDatabase.getDatabase(requireContext()).barcodeDao().insertBarcode(
-                                BarcodeForDatabase(R.drawable.icons8_twittervector,customBarcode,BarcodeTypes.TYPE_TWITTER.nameofitem,System.currentTimeMillis(),false,false,Url.editText!!.text.toString()
+                    if(FeaturesOptions().sharedPreferences(requireContext())){
+                        GlobalScope.launch(Dispatchers.IO) {
+                            try {customBarcode.isSaved=true
+                                BarcodeDatabase.getDatabase(requireContext()).barcodeDao().insertBarcode(
+                                    BarcodeForDatabase(R.drawable.icons8_twittervector,customBarcode,BarcodeTypes.TYPE_TWITTER.nameofitem,System.currentTimeMillis(),false,false,Url.editText!!.text.toString()
+                                    )
                                 )
-                            )
-                        }catch (e:Exception){
+                            }catch (e:Exception){
+                                withContext(Dispatchers.Main){
+                                    Toast.makeText(requireContext(),"Something went Wrong!",Toast.LENGTH_SHORT).show()
 
-                            Toast.makeText(requireContext(),"Something went Wrong!",Toast.LENGTH_SHORT).show()
-
+                                }
+                            }
                         }
                     }
+
                     findNavController().navigate(
                         GenerateBarcodeFragmentDirections.actionGenerateBarcodeFragmentToFinalGeneartedBarcodeFragment(
                             barcodeString
                         )
                     )
                 }else{
-                    Toast.makeText(requireContext(),"Input Username",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(),"Empty fields",Toast.LENGTH_SHORT).show()
 
                 }
 
@@ -442,25 +484,29 @@ Toast.makeText(requireContext(),"Empty Tel",Toast.LENGTH_SHORT).show()
                     barcodeString ="https://www.paypal.me/${Url.editText!!.text}"
                     customBarcode= CustomBarcode(BarcodeTypes.TYPE_URL.name)
                     customBarcode.urlOfWebsite=barcodeString
-                    GlobalScope.launch(Dispatchers.IO) {
-                        try {customBarcode.isSaved=true
-                            BarcodeDatabase.getDatabase(requireContext()).barcodeDao().insertBarcode(
-                                BarcodeForDatabase(R.drawable.icons8_paypalvector,customBarcode,BarcodeTypes.TYPE_PAYPAL.nameofitem,System.currentTimeMillis(),false,false,Url.editText!!.text.toString()
+                    if(FeaturesOptions().sharedPreferences(requireContext())){
+                        GlobalScope.launch(Dispatchers.IO) {
+                            try {customBarcode.isSaved=true
+                                BarcodeDatabase.getDatabase(requireContext()).barcodeDao().insertBarcode(
+                                    BarcodeForDatabase(R.drawable.icons8_paypalvector,customBarcode,BarcodeTypes.TYPE_PAYPAL.nameofitem,System.currentTimeMillis(),false,false,Url.editText!!.text.toString()
+                                    )
                                 )
-                            )
-                        }catch (e:Exception){
+                            }catch (e:Exception){
+                                withContext(Dispatchers.Main){
+                                    Toast.makeText(requireContext(),"Something went Wrong!",Toast.LENGTH_SHORT).show()
 
-                            Toast.makeText(requireContext(),"Something went Wrong!",Toast.LENGTH_SHORT).show()
-
+                                }
+                            }
                         }
                     }
+
                     findNavController().navigate(
                         GenerateBarcodeFragmentDirections.actionGenerateBarcodeFragmentToFinalGeneartedBarcodeFragment(
                             barcodeString
                         )
                     )
                 }else{
-                    Toast.makeText(requireContext(),"Input Username",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(),"Empty Fields",Toast.LENGTH_SHORT).show()
 
                 }
 
@@ -474,25 +520,29 @@ Toast.makeText(requireContext(),"Empty Tel",Toast.LENGTH_SHORT).show()
                     barcodeString ="instagram://user?username=${Url.editText!!.text}"
                     customBarcode= CustomBarcode(BarcodeTypes.TYPE_URL.name)
                     customBarcode.urlOfWebsite=barcodeString
-                    GlobalScope.launch(Dispatchers.IO) {
-                        try {customBarcode.isSaved=true
-                            BarcodeDatabase.getDatabase(requireContext()).barcodeDao().insertBarcode(
-                                BarcodeForDatabase(R.drawable.icons8_instagram,customBarcode,BarcodeTypes.TYPE_INSTAGRAM.nameofitem,System.currentTimeMillis(),false,false,Url.editText!!.text.toString()
+                    if(FeaturesOptions().sharedPreferences(requireContext())){
+                        GlobalScope.launch(Dispatchers.IO) {
+                            try {customBarcode.isSaved=true
+                                BarcodeDatabase.getDatabase(requireContext()).barcodeDao().insertBarcode(
+                                    BarcodeForDatabase(R.drawable.icons8_instagram,customBarcode,BarcodeTypes.TYPE_INSTAGRAM.nameofitem,System.currentTimeMillis(),false,false,Url.editText!!.text.toString()
+                                    )
                                 )
-                            )
-                        }catch (e:Exception){
+                            }catch (e:Exception){
+                                withContext(Dispatchers.Main){
+                                    Toast.makeText(requireContext(),"Something went Wrong!",Toast.LENGTH_SHORT).show()
 
-                            Toast.makeText(requireContext(),"Something went Wrong!",Toast.LENGTH_SHORT).show()
-
+                                }
+                            }
                         }
                     }
+
                     findNavController().navigate(
                         GenerateBarcodeFragmentDirections.actionGenerateBarcodeFragmentToFinalGeneartedBarcodeFragment(
                             barcodeString
                         )
                     )
                 }else{
-                    Toast.makeText(requireContext(),"Input Username",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(),"Empty fields",Toast.LENGTH_SHORT).show()
 
                 }
 
@@ -500,14 +550,14 @@ Toast.makeText(requireContext(),"Empty Tel",Toast.LENGTH_SHORT).show()
             }
             BarcodeTypes.TYPE_WIFI.name -> {
                 typeimage.setImageResource(R.drawable.ic_baseline_network_wifivector)
-                Log.d("papa", security+"1")
+
                 networkSSID.visibility = View.VISIBLE
                 encyptionType.visibility = View.VISIBLE
                 if(security=="nopass"){
-                    Log.d("papa", security+"3")
+
                     password.visibility=View.GONE
                 }else{
-                    Log.d("papa", security+"2")
+
                     password.visibility=View.VISIBLE
                 }
 
@@ -521,11 +571,12 @@ Toast.makeText(requireContext(),"Empty Tel",Toast.LENGTH_SHORT).show()
 
 
                     barcodeString =
-                        "WIFI:T:$security;S:${networkSSID.editText!!.text};P:$security;;"
+                        "WIFI:T:$security;S:${networkSSID.editText!!.text};P:${password.editText!!.text};;"
                     customBarcode= CustomBarcode(BarcodeTypes.TYPE_WIFI.name)
                     customBarcode.wifiNetworkEncryptionType=security
                     customBarcode.wifiNetworkPassword=password.editText!!.text.toString()
                     customBarcode.wifiNetworkSsid=networkSSID.editText!!.text.toString()
+                if(FeaturesOptions().sharedPreferences(requireContext())){
                     GlobalScope.launch(Dispatchers.IO) {
                         try {customBarcode.isSaved=true
                             BarcodeDatabase.getDatabase(requireContext()).barcodeDao().insertBarcode(
@@ -533,11 +584,14 @@ Toast.makeText(requireContext(),"Empty Tel",Toast.LENGTH_SHORT).show()
                                 )
                             )
                         }catch (e:Exception){
+                            withContext(Dispatchers.Main){
+                                Toast.makeText(requireContext(),"Something went Wrong!",Toast.LENGTH_SHORT).show()
 
-                            Toast.makeText(requireContext(),"Something went Wrong!",Toast.LENGTH_SHORT).show()
-
+                            }
                         }
+
                     }
+                  }
                     findNavController().navigate(
                         GenerateBarcodeFragmentDirections.actionGenerateBarcodeFragmentToFinalGeneartedBarcodeFragment(
                             barcodeString
@@ -576,18 +630,23 @@ Toast.makeText(requireContext(),"Empty Tel",Toast.LENGTH_SHORT).show()
                     barcodeString = "${text.editText!!.text}"
                    customBarcode= CustomBarcode(BarcodeTypes.TYPE_TEXT.name)
                     customBarcode.textItem=text.editText!!.text.toString()
-                    GlobalScope.launch(Dispatchers.IO) {
-                        try {customBarcode.isSaved=true
-                            BarcodeDatabase.getDatabase(requireContext()).barcodeDao().insertBarcode(
-                                BarcodeForDatabase(R.drawable.ic_baseline_textcontent,customBarcode,BarcodeTypes.TYPE_TEXT.nameofitem,System.currentTimeMillis(),false,false,text.editText!!.text.toString()
+                    if(FeaturesOptions().sharedPreferences(requireContext())){
+                        GlobalScope.launch(Dispatchers.IO) {
+                            try {customBarcode.isSaved=true
+                                BarcodeDatabase.getDatabase(requireContext()).barcodeDao().insertBarcode(
+                                    BarcodeForDatabase(R.drawable.ic_baseline_textcontent,customBarcode,BarcodeTypes.TYPE_TEXT.nameofitem,System.currentTimeMillis(),false,false,text.editText!!.text.toString()
+                                    )
                                 )
-                            )
-                        }catch (e:Exception){
+                            }catch (e:Exception){
 
-                            Toast.makeText(requireContext(),"Something Went Wrong",Toast.LENGTH_SHORT).show()
+                                withContext(Dispatchers.Main){
+                                    Toast.makeText(requireContext(),"Something went Wrong!",Toast.LENGTH_SHORT).show()
 
+                                }
+                            }
                         }
                     }
+
                     findNavController().navigate(
                         GenerateBarcodeFragmentDirections.actionGenerateBarcodeFragmentToFinalGeneartedBarcodeFragment(
                             barcodeString
@@ -611,18 +670,22 @@ Toast.makeText(requireContext(),"Empty Tel",Toast.LENGTH_SHORT).show()
                     customBarcode= CustomBarcode(BarcodeTypes.TYPE_SMS.toString())
                     customBarcode.phoneNumberOfSms=phoneNumber.editText!!.text.toString()
                     customBarcode.messageOfSms=smsMessage.editText!!.text.toString()
-                    GlobalScope.launch(Dispatchers.IO) {
-                        try {customBarcode.isSaved=true
-                            BarcodeDatabase.getDatabase(requireContext()).barcodeDao().insertBarcode(
-                                BarcodeForDatabase(R.drawable.ic_baseline_smsvector,customBarcode,BarcodeTypes.TYPE_SMS.nameofitem,System.currentTimeMillis(),false,false,smsMessage.editText!!.text.toString()
+                    if(FeaturesOptions().sharedPreferences(requireContext())){
+                        GlobalScope.launch(Dispatchers.IO) {
+                            try {customBarcode.isSaved=true
+                                BarcodeDatabase.getDatabase(requireContext()).barcodeDao().insertBarcode(
+                                    BarcodeForDatabase(R.drawable.ic_baseline_smsvector,customBarcode,BarcodeTypes.TYPE_SMS.nameofitem,System.currentTimeMillis(),false,false,smsMessage.editText!!.text.toString()
+                                    )
                                 )
-                            )
-                        }catch (e:Exception){
+                            }catch (e:Exception){
+                                withContext(Dispatchers.Main){
+                                    Toast.makeText(requireContext(),"Something went Wrong!",Toast.LENGTH_SHORT).show()
 
-                            Toast.makeText(requireContext(),"Something Went Wrong",Toast.LENGTH_SHORT).show()
-
+                                }
+                            }
                         }
                     }
+
                     findNavController().navigate(
                         GenerateBarcodeFragmentDirections.actionGenerateBarcodeFragmentToFinalGeneartedBarcodeFragment(
                             barcodeString
@@ -666,18 +729,22 @@ Toast.makeText(requireContext(),"Empty Tel",Toast.LENGTH_SHORT).show()
                            "DESCRIPTION:${description.editText!!.text.toString()}\n"+
                            "LOCATION:${eventlocation.editText!!.text.toString()}\n"+
                            "END:VEVENT"
-                    GlobalScope.launch(Dispatchers.IO) {
-                        try {customBarcode.isSaved=true
-                            BarcodeDatabase.getDatabase(requireContext()).barcodeDao().insertBarcode(
-                                BarcodeForDatabase(R.drawable.ic_baseline_calendar_vector,customBarcode,BarcodeTypes.TYPE_CALENDAR_EVENT.nameofitem,System.currentTimeMillis(),false,false,description.editText!!.text.toString()
+                    if(FeaturesOptions().sharedPreferences(requireContext())){
+                        GlobalScope.launch(Dispatchers.IO) {
+                            try {customBarcode.isSaved=true
+                                BarcodeDatabase.getDatabase(requireContext()).barcodeDao().insertBarcode(
+                                    BarcodeForDatabase(R.drawable.ic_baseline_calendar_vector,customBarcode,BarcodeTypes.TYPE_CALENDAR_EVENT.nameofitem,System.currentTimeMillis(),false,false,description.editText!!.text.toString()
+                                    )
                                 )
-                            )
-                        }catch (e:Exception){
+                            }catch (e:Exception){
+                                withContext(Dispatchers.Main){
+                                    Toast.makeText(requireContext(),"Something went Wrong!",Toast.LENGTH_SHORT).show()
 
-                            Toast.makeText(requireContext(),"Something Went Wrong",Toast.LENGTH_SHORT).show()
-
+                                }
+                            }
                         }
                     }
+
                     findNavController().navigate(GenerateBarcodeFragmentDirections.actionGenerateBarcodeFragmentToFinalGeneartedBarcodeFragment(barcodeString))
 
                 }else{
@@ -703,30 +770,32 @@ Toast.makeText(requireContext(),"Empty Tel",Toast.LENGTH_SHORT).show()
                     email.editText!!.text.isNotEmpty() && profession.editText!!.text.isNotEmpty()
 
                 ){
-                    customBarcode= CustomBarcode("TYPE_MYCARD")
+                    customBarcode= CustomBarcode(BarcodeTypes.TYPE_CONTACT_INFO.name)
                     customBarcode.name=name.editText!!.text.toString()
                     customBarcode.telephoneNumber=phoneNumber.editText!!.text.toString()
                     customBarcode.address=address.editText!!.text.toString()
                     customBarcode.email=email.editText!!.text.toString()
+                   if(FeaturesOptions().sharedPreferences(requireContext())){
+                       GlobalScope.launch(Dispatchers.IO) {
+                           var barcodeforsaving= BarcodeForDatabase(R.drawable.phone_book_contacts_svgrepo_com,customBarcode,BarcodeTypes.TYPE_CONTACT_INFO.nameofitem,System.currentTimeMillis(),false,false,name.editText!!.text.toString()
+                           )
+                           barcodeforsaving.profession=profession.editText!!.text.toString()
+                           try {customBarcode.isSaved=true
+                               BarcodeDatabase.getDatabase(requireContext()).barcodeDao().insertBarcode(
+                                   barcodeforsaving
+
+                               )
+                           }catch (e:Exception){
+
+                               withContext(Dispatchers.Main){
+                                   Toast.makeText(requireContext(),"Something Went Wrong",Toast.LENGTH_SHORT).show()
+
+                               }
+                           }
+                       }
+                   }
 
 
-                    GlobalScope.launch(Dispatchers.IO) {
-                        var barcodeforsaving= BarcodeForDatabase(R.drawable.phone_book_contacts_svgrepo_com,customBarcode,BarcodeTypes.TYPE_CONTACT_INFO.nameofitem,System.currentTimeMillis(),false,false,name.editText!!.text.toString()
-                        )
-                        barcodeforsaving.profession=profession.editText!!.text.toString()
-                        try {customBarcode.isSaved=true
-                            BarcodeDatabase.getDatabase(requireContext()).barcodeDao().insertBarcode(
-                               barcodeforsaving
-
-                            )
-                        }catch (e:Exception){
-
-                         withContext(Dispatchers.Main){
-                             Toast.makeText(requireContext(),"Something Went Wrong",Toast.LENGTH_SHORT).show()
-
-                         }
-                        }
-                    }
                     barcodeString =    "MECARD:N:${name.editText!!.text};ADR:${address.editText!!.text};T:${profession.editText!!.text.toString()};TEL:${phoneNumber.editText!!.text};EMAIL:${email.editText!!.text};;"
 
                     findNavController().navigate(
@@ -762,18 +831,22 @@ Toast.makeText(requireContext(),"Empty Tel",Toast.LENGTH_SHORT).show()
                     customBarcode.telephoneNumber=phoneNumber.editText!!.text.toString()
                     customBarcode.address=address.editText!!.text.toString()
                     customBarcode.email=email.editText!!.text.toString()
-                    GlobalScope.launch(Dispatchers.IO) {
-                        try {customBarcode.isSaved=true
-                            BarcodeDatabase.getDatabase(requireContext()).barcodeDao().insertBarcode(
-                                BarcodeForDatabase(R.drawable.phone_book_contacts_svgrepo_com,customBarcode,BarcodeTypes.TYPE_CONTACT_INFO.nameofitem,System.currentTimeMillis(),false,false,name.editText!!.text.toString()
+                    if(FeaturesOptions().sharedPreferences(requireContext())){
+                        GlobalScope.launch(Dispatchers.IO) {
+                            try {customBarcode.isSaved=true
+                                BarcodeDatabase.getDatabase(requireContext()).barcodeDao().insertBarcode(
+                                    BarcodeForDatabase(R.drawable.phone_book_contacts_svgrepo_com,customBarcode,BarcodeTypes.TYPE_CONTACT_INFO.nameofitem,System.currentTimeMillis(),false,false,name.editText!!.text.toString()
+                                    )
                                 )
-                            )
-                        }catch (e:Exception){
+                            }catch (e:Exception){
+                                withContext(Dispatchers.Main){
+                                    Toast.makeText(requireContext(),"Something went Wrong!",Toast.LENGTH_SHORT).show()
 
-                            Toast.makeText(requireContext(),"Something Went Wrong",Toast.LENGTH_SHORT).show()
-
+                                }
+                            }
                         }
                     }
+
                     barcodeString =
                         "MECARD:N:${name.editText!!.text};ADR:${address.editText!!.text};TEL:${phoneNumber.editText!!.text};EMAIL:${email.editText!!.text};;"
                     findNavController().navigate(
@@ -797,13 +870,13 @@ Toast.makeText(requireContext(),"Empty Tel",Toast.LENGTH_SHORT).show()
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
         security=securityType.getItemAtPosition(p2).toString()
         if(security!="None"){
-            Log.d("papa", security+"5")
+
             password.visibility=View.VISIBLE
         }else{
             password.visibility=View.GONE
-            Log.d("papa", security+"6")
+
             security="nopass"
-            Log.d("papa", security+"7")
+
         }
 
     }

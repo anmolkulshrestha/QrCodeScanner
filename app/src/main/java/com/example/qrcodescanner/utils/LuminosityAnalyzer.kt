@@ -2,39 +2,27 @@ package com.example.qrcodescanner.utils
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.*
-import android.media.Image
-import android.net.Uri
-import android.provider.CalendarContract
+
 import android.util.Log
 import android.widget.Toast
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
-import com.example.qrcodescanner.lumalistener
+import com.example.qrcodescanner.listeners.lumalistener
 import com.example.qrcodescanner.models.*
-import com.example.qrcodescanner.utils.BarcodeBitmapGeneartor.Companion.createBarcodeBitmap
-import com.google.android.libraries.barhopper.RecognitionOptions.CODE_128
+
+
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
-import com.google.mlkit.vision.barcode.common.Barcode.BarcodeFormat
+
 import com.google.mlkit.vision.common.InputImage
-import com.google.zxing.MultiFormatWriter
-import com.google.zxing.WriterException
-import com.google.zxing.common.BitMatrix
 
 
 
-import java.io.ByteArrayOutputStream
-import java.nio.ByteBuffer
-import java.util.*
 
-
-
-class LuminosityAnalyzer(var listener:lumalistener,
+class LuminosityAnalyzer(var listener: lumalistener,
                          var context:Context,
-                         var previewViewWidth:Float,
-                         var previewViewHeight:Float) : ImageAnalysis.Analyzer {
+                        ) : ImageAnalysis.Analyzer {
 
     private var isScanning: Boolean = false
 
@@ -46,7 +34,7 @@ class LuminosityAnalyzer(var listener:lumalistener,
             if (mediaImage != null && !isScanning) {
                 val inputImage = InputImage
                     .fromMediaImage(mediaImage, image.imageInfo.rotationDegrees)
-                if(inputImage==null){}
+
                 val options = BarcodeScannerOptions
                     .Builder()
                     .setBarcodeFormats(Barcode.FORMAT_ALL_FORMATS).build()
@@ -60,25 +48,23 @@ class LuminosityAnalyzer(var listener:lumalistener,
                         if(barcodes.isNotEmpty()){
                          with(barcodes.first()) {
                              val valueType = this.valueType
-                             Log.d("typeaq", this.valueType.toString())
+
 
                              when (valueType) {
                                  Barcode.TYPE_WIFI-> {
                                      val ssid = this.wifi!!.ssid
                                      val password = this.wifi!!.password
                                      val type = this.wifi!!.encryptionType
-                                     Log.d("typepls", type.toString())
+                                     val scannedItem=CustomBarcode(BarcodeTypes.TYPE_WIFI.name)
+                                     var typename=this.rawValue.toString().split("T:")[1].split(";")[0]
 
-
-
-                                     val scannedItem=CustomBarcode("TYPE_WIFI")
                                      scannedItem.wifiNetworkSsid=ssid?:""
-                                     scannedItem.wifiNetworkEncryptionType=type.toString()?:""
+                                     scannedItem.wifiNetworkEncryptionType=typename?:""
                                      scannedItem.wifiNetworkPassword=password?:""
                                      scannedItem.ConnectToWifi=true
                                      scannedItem.Share=true
                                      scannedItem.Copy=true
-                                     scannedItem.barcodeFormattedText="WIFI:T:$type;S:$ssid;P:$password;;"
+                                     scannedItem.barcodeFormattedText="WIFI:T:$typename;S:$ssid;P:$password;;"
                                      listener.sendScannedBarcodeItem(scannedItem)
                                      scanner.close()
 
@@ -87,7 +73,7 @@ class LuminosityAnalyzer(var listener:lumalistener,
                                      val title = this.url!!.title
                                      val url = this.url!!.url
 
-                                     val scannedItem=CustomBarcode("TYPE_URL")
+                                     val scannedItem=CustomBarcode(BarcodeTypes.TYPE_URL.name)
                                      scannedItem.titleOfWebsite=title?:""
                                      scannedItem.urlOfWebsite=url?:""
 
@@ -107,7 +93,7 @@ class LuminosityAnalyzer(var listener:lumalistener,
                                      val message=this.email!!.body.toString()
 
 
-                                     val scannedItem=CustomBarcode("TYPE_EMAIL")
+                                     val scannedItem=CustomBarcode(BarcodeTypes.TYPE_EMAIL.name)
                                      scannedItem.email=email?:""
                                      scannedItem.contentOfEmail=message?:""
                                      scannedItem.subjectOfEmail=subject?:""
@@ -122,7 +108,7 @@ class LuminosityAnalyzer(var listener:lumalistener,
                                  Barcode.TYPE_PHONE->{
                                      val phoneno=this.phone!!.number
 
-                                     val scannedItem=CustomBarcode("TYPE_PHONE")
+                                     val scannedItem=CustomBarcode(BarcodeTypes.TYPE_PHONE.name)
                                      scannedItem.telephoneNumber=phoneno?:""
 
                                      scannedItem.Copy=true
@@ -139,7 +125,7 @@ class LuminosityAnalyzer(var listener:lumalistener,
                                      val message=this.sms!!.message
                                      val phonenumber=this.sms!!.phoneNumber
 
-                                     val scannedItem=CustomBarcode("TYPE_SMS")
+                                     val scannedItem=CustomBarcode(BarcodeTypes.TYPE_SMS.name)
                                      scannedItem.messageOfSms=message?:""
                                      scannedItem.phoneNumberOfSms=phonenumber?:""
 
@@ -154,17 +140,19 @@ class LuminosityAnalyzer(var listener:lumalistener,
 
                                  }
                                  Barcode.TYPE_CONTACT_INFO->{
+
                                      val name=this.contactInfo!!.name
+
                                      val organization=this.contactInfo!!.organization
                                      val email=this.contactInfo!!.emails
                                      val addresses=this.contactInfo!!.addresses
                                      val phone=this.contactInfo!!.phones
 
-                                     val scannedItem=CustomBarcode("TYPE_CONTACT_INFO")
-                                     scannedItem.email=email.first().toString()?:""
+                                     val scannedItem=CustomBarcode(BarcodeTypes.TYPE_CONTACT_INFO.name)
+                                     scannedItem.email=email.toString()?:""
                                      scannedItem.organization=organization.toString()?:""
                                      scannedItem.address=addresses.toString()?:""
-                                     scannedItem.name=name.toString()?:""
+                                     scannedItem.name=name.toString()
                                      scannedItem.telephoneNumber=phone.toString()?:""
 
                                      scannedItem.barcodeFormattedText="MECARD:N:$name;ADR:$addresses;TEL:$phone;EMAIL:$email;;"
@@ -180,7 +168,7 @@ class LuminosityAnalyzer(var listener:lumalistener,
                                      val title=this.calendarEvent!!.description
                                      val organizer=this.calendarEvent!!.organizer
                                      val venue=this.calendarEvent!!.location
-                                     val scannedItem=CustomBarcode("TYPE_CALENDAR_EVENT")
+                                     val scannedItem=CustomBarcode(BarcodeTypes.TYPE_CALENDAR_EVENT.name)
                                      scannedItem.venueOfEvent=venue.toString()
                                      scannedItem.organizerOfEvent=organizer.toString()
                                      scannedItem.descriptionOfEvent=title.toString()
@@ -232,16 +220,15 @@ class LuminosityAnalyzer(var listener:lumalistener,
                                  else->{
                                      val content=this.rawValue.toString()
 
-                                     val scannedItem=CustomBarcode("TYPE_TEXT")
+                                     val scannedItem=CustomBarcode(BarcodeTypes.TYPE_TEXT.name)
                                      scannedItem.textItem=content?:""
 
                                      scannedItem.Copy=true
                                      scannedItem.Share=true
                                      scannedItem.OpenOnWeb=true
-//                                     val barcodeBitmap=BarcodeBitmapGeneartor.createBarcodeBitmap("$content",200,200)
-//                                    scannedItem.bitmap=barcodeBitmap!!
+//
                                      scannedItem.barcodeFormattedText="$content"
-                                     Log.d("textraw",this.rawValue.toString())
+
                                      listener.sendScannedBarcodeItem(scannedItem)
                                      scanner.close()
                                  }
@@ -250,7 +237,6 @@ class LuminosityAnalyzer(var listener:lumalistener,
 
                      }
                      }else{
-
                      }
                         isScanning = false
                         image.close()

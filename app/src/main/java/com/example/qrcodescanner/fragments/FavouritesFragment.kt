@@ -1,4 +1,4 @@
-package com.example.qrcodescanner
+package com.example.qrcodescanner.fragments
 
 import android.content.pm.ActivityInfo
 import android.os.Bundle
@@ -7,29 +7,27 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
+
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.qrcodescanner.R
 import com.example.qrcodescanner.adapter.SavedItemAdapter
-import com.example.qrcodescanner.database.BarcodeDatabase
-import com.example.qrcodescanner.fragments.HistoryFragmentDirections
+import com.example.qrcodescanner.listeners.SavedItemClickHnadler
+
 import com.example.qrcodescanner.models.BarcodeForDatabase
 import com.example.qrcodescanner.models.CustomBarcode
 import com.example.qrcodescanner.viewmodels.FavouritesViewModel
-import com.example.qrcodescanner.viewmodels.ScannedHistoryViewModel
+
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.android.synthetic.main.fragment_favourites.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+
 
 
 class FavouritesFragment : Fragment() {
     lateinit var favouritesBarcodeListRecyclerView: RecyclerView
     lateinit var   favouritesViewModel: FavouritesViewModel
-    private val myAdapter: SavedItemAdapter = SavedItemAdapter( object:SavedItemClickHnadler{
+    private val myAdapter: SavedItemAdapter = SavedItemAdapter( object: SavedItemClickHnadler {
         override fun handleclickisfavourite(barcode: BarcodeForDatabase) {
 
            favouritesViewModel.updateIsFavourite(barcode)
@@ -79,11 +77,9 @@ class FavouritesFragment : Fragment() {
 
 
 
-            for(item in it){
-                Log.d("whynow", item.toString())
-            }
+
         })
-        Log.d("bhen", "onCretedpappu")
+
 
 
 

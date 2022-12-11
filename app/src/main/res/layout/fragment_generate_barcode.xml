@@ -167,11 +167,12 @@
               <com.google.android.material.textfield.TextInputLayout
 
                   android:id="@+id/phoneNumber"
+
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:layout_marginBottom="16dp"
 
-                  android:hint="Tel"
+                  android:hint="Include Counrty Code ex: +91"
 
                   android:visibility="gone"
                   app:boxBackgroundMode="outline"
@@ -185,7 +186,7 @@
 
                   <com.google.android.material.textfield.TextInputEditText
                       android:layout_width="match_parent"
-                      android:inputType="phone"
+
                       android:layout_height="wrap_content"
                       />
 
@@ -479,6 +480,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/eventdescription"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
@@ -496,6 +498,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
+
                 android:layout_height="wrap_content"
                 />
 

@@ -18,10 +18,13 @@
             app:destination="@id/createFragment" />
         <action
             android:id="@+id/action_scanFragment_to_historyFragment"
-            app:destination="@id/historyFragment" />
+            app:destination="@id/historyFragment"
+            app:enterAnim="@anim/bottomtotop"
+            app:popExitAnim="@anim/toptobottom" />
         <action
             android:id="@+id/action_scanFragment_to_viewScannedBarcodeFragment"
-            app:destination="@id/viewScannedBarcodeFragment" />
+            app:destination="@id/viewScannedBarcodeFragment"
+            app:enterAnim="@anim/bottomtotop" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -69,7 +72,8 @@
             app:destination="@id/settingsFragment" />
         <action
             android:id="@+id/action_createFragment_to_generateBarcodeFragment"
-            app:destination="@id/generateBarcodeFragment" />
+            app:destination="@id/generateBarcodeFragment"
+            app:enterAnim="@anim/bottomtotop" />
     </fragment>
     <fragment
         android:id="@+id/viewScannedBarcodeFragment"
@@ -78,7 +82,8 @@
         tools:layout="@layout/fragment_view_scanned_barcode" >
         <action
             android:id="@+id/action_viewScannedBarcodeFragment_to_scanFragment"
-            app:destination="@id/scanFragment" />
+            app:destination="@id/scanFragment"
+            app:enterAnim="@android:anim/slide_in_left" />
         <action
             android:id="@+id/action_viewScannedBarcodeFragment_to_historyFragment"
             app:destination="@id/historyFragment" />
@@ -118,11 +123,12 @@
             app:argType="com.example.qrcodescanner.models.CreateBarcodeOption" />
         <action
             android:id="@+id/action_generateBarcodeFragment_to_finalGeneartedBarcodeFragment"
-            app:destination="@id/finalGeneartedBarcodeFragment" />
+            app:destination="@id/finalGeneartedBarcodeFragment"
+            app:enterAnim="@anim/bottomtotop" />
     </fragment>
     <fragment
         android:id="@+id/finalGeneartedBarcodeFragment"
-        android:name="com.example.qrcodescanner.FinalGeneartedBarcodeFragment"
+        android:name="com.example.qrcodescanner.fragments.FinalGeneartedBarcodeFragment"
         android:label="Save-Share"
         tools:layout="@layout/fragment_final_genearted_barcode" >
         <action
@@ -136,7 +142,7 @@
     </fragment>
     <fragment
         android:id="@+id/scanedFragment"
-        android:name="com.example.qrcodescanner.ScanedFragment"
+        android:name="com.example.qrcodescanner.fragments.ScanedFragment"
         android:label="Scanned History"
         tools:layout="@layout/fragment_scaned" >
         <action
@@ -145,7 +151,7 @@
     </fragment>
     <fragment
         android:id="@+id/createdFragment"
-        android:name="com.example.qrcodescanner.CreatedFragment"
+        android:name="com.example.qrcodescanner.fragments.CreatedFragment"
         android:label="Created History"
         tools:layout="@layout/fragment_created" >
         <action
@@ -154,7 +160,7 @@
     </fragment>
     <fragment
         android:id="@+id/favouritesFragment"
-        android:name="com.example.qrcodescanner.FavouritesFragment"
+        android:name="com.example.qrcodescanner.fragments.FavouritesFragment"
         android:label="Favourites"
         tools:layout="@layout/fragment_favourites" >
         <action

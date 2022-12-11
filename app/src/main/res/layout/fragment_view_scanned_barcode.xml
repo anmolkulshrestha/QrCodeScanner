@@ -7,6 +7,7 @@
     android:background="@color/background_material_cards"
     android:backgroundTint="@color/background_material_cards"
     android:scrollbarAlwaysDrawVerticalTrack="true"
+    android:fillViewport="true"
 
     tools:context=".fragments.ViewScannedBarcodeFragment">
 
@@ -60,6 +61,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="40dp"
             android:gravity="center"
+            android:layout_marginBottom="80dp"
             android:orientation="horizontal">
 
             <ImageView

@@ -1,42 +1,34 @@
 package com.example.qrcodescanner.fragments
 
-import android.content.Intent
 import android.content.pm.ActivityInfo
-import android.graphics.Bitmap
-import android.net.Uri
-import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.qrcodescanner.FeatureClickHandler
+import com.example.qrcodescanner.listeners.FeatureClickHandler
 import com.example.qrcodescanner.R
 import com.example.qrcodescanner.adapter.ScannedBarcodeContentAdapter
 import com.example.qrcodescanner.adapter.ScannedBarcodeFeaturesAdapter
 import com.example.qrcodescanner.database.BarcodeDatabase
 
-import com.example.qrcodescanner.featureslist.FeaturesOptions
 import com.example.qrcodescanner.models.*
 import com.example.qrcodescanner.utils.BarcodeBitmapGeneartor
-import com.google.android.gms.tasks.Tasks.call
+import com.example.qrcodescanner.utils.FeaturesOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_generate_barcode.*
-import kotlinx.android.synthetic.main.fragment_view_scanned_barcode.*
+
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlin.math.log
 
 
 class ViewScannedBarcodeFragment : Fragment() {
@@ -79,27 +71,19 @@ class ViewScannedBarcodeFragment : Fragment() {
         bitmap.setImageBitmap(BarcodeBitmapGeneartor.createBarcodeBitmap(scannedBarcode.barcodeFormattedText.toString(),200,200))
 
 
-       if(scannedBarcode.type=="TYPE_WIFI"){
+       if(scannedBarcode.type==BarcodeTypes.TYPE_WIFI.name){
 
-           var secuityTypeNo=scannedBarcode.wifiNetworkEncryptionType?:""
-
-           var securityType=when(secuityTypeNo){
-
-               "3"->"WEP"
-               "2"->"WPA/WPA2"
-               else->"None"
+           var secuityType=scannedBarcode.wifiNetworkEncryptionType?:""
 
 
-           }
-
-           if(securityType!="None"){
+           if(secuityType!="nopass"){
 
                barcodeTileList.add(BarcodeTile("Password:",scannedBarcode.wifiNetworkPassword))
-               barcodeTileList.add(BarcodeTile("Security type:",securityType))
+               barcodeTileList.add(BarcodeTile("Security type:",secuityType))
                barcodeTileList.add(BarcodeTile("Network Name:",scannedBarcode.wifiNetworkSsid))
 
            }else{
-               barcodeTileList.add(BarcodeTile("Security type:",securityType))
+               barcodeTileList.add(BarcodeTile("Security type:",secuityType))
                barcodeTileList.add(BarcodeTile("Network Name:",scannedBarcode.wifiNetworkSsid))
            }
 
@@ -108,7 +92,7 @@ class ViewScannedBarcodeFragment : Fragment() {
            barcodeFeaturesList.add(BarcodeFeatures("Connect to wifi",R.drawable.ic_baseline_network_wifivector))
            barcodeFeaturesList.add(BarcodeFeatures("Copy",R.drawable.ic_baseline_content_copy_vector))
            barcodeFeaturesList.add(BarcodeFeatures("share",R.drawable.ic_baseline_share_vector))
-        if(!scannedBarcode.isSaved){
+        if(!scannedBarcode.isSaved && FeaturesOptions().sharedPreferences(requireContext())){
             GlobalScope.launch(Dispatchers.IO) {
                 try{scannedBarcode.isSaved=true
 
@@ -117,7 +101,11 @@ class ViewScannedBarcodeFragment : Fragment() {
                     )
                 }catch (e:Exception){
                     withContext(Dispatchers.Main){
+
+
                         Toast.makeText(requireContext(),"Something Went Wrong In saving",Toast.LENGTH_SHORT).show()
+
+
                     }
                 }
 
@@ -131,7 +119,7 @@ class ViewScannedBarcodeFragment : Fragment() {
 
 
 
-        if(scannedBarcode.type=="TYPE_URL"){
+        if(scannedBarcode.type==BarcodeTypes.TYPE_URL.name){
             if(scannedBarcode.titleOfWebsite!=""){
                 barcodeTileList.add(BarcodeTile("Title:",scannedBarcode.titleOfWebsite))
             }
@@ -142,7 +130,7 @@ class ViewScannedBarcodeFragment : Fragment() {
             barcodeFeaturesList.add(BarcodeFeatures("Copy",R.drawable.ic_baseline_content_copy_vector))
             barcodeFeaturesList.add(BarcodeFeatures("share",R.drawable.ic_baseline_share_vector))
 
-       if(!scannedBarcode.isSaved){
+       if(!scannedBarcode.isSaved && FeaturesOptions().sharedPreferences(requireContext())){
            GlobalScope.launch(Dispatchers.IO) {
                try{scannedBarcode.isSaved=true
                    BarcodeDatabase.getDatabase(requireContext()).barcodeDao().insertBarcode(
@@ -160,7 +148,7 @@ class ViewScannedBarcodeFragment : Fragment() {
 
 
         }
-       if(scannedBarcode.type=="TYPE_EMAIL"){
+       if(scannedBarcode.type==BarcodeTypes.TYPE_EMAIL.name){
             barcodeTileList.add(BarcodeTile("To:",scannedBarcode.email))
             barcodeTileList.add(BarcodeTile("Subject:",scannedBarcode.subjectOfEmail))
             barcodeTileList.add(BarcodeTile("Content:",scannedBarcode.contentOfEmail))
@@ -169,7 +157,7 @@ class ViewScannedBarcodeFragment : Fragment() {
             barcodeFeaturesList.add(BarcodeFeatures("add to contacts",R.drawable.ic_baseline_add_tocontactvector))
             barcodeFeaturesList.add(BarcodeFeatures("Copy",R.drawable.ic_baseline_content_copy_vector))
             barcodeFeaturesList.add(BarcodeFeatures("share",R.drawable.ic_baseline_share_vector))
-           if(!scannedBarcode.isSaved){
+           if(!scannedBarcode.isSaved && FeaturesOptions().sharedPreferences(requireContext())){
                GlobalScope.launch(Dispatchers.IO) {
                    try{scannedBarcode.isSaved=true
                        BarcodeDatabase.getDatabase(requireContext()).barcodeDao().insertBarcode(
@@ -189,13 +177,13 @@ class ViewScannedBarcodeFragment : Fragment() {
 
 
         }
-       if(scannedBarcode.type=="TYPE_PHONE") {barcodeTileList.add(BarcodeTile("Tel:",scannedBarcode.telephoneNumber))
+       if(scannedBarcode.type==BarcodeTypes.TYPE_PHONE.name) {barcodeTileList.add(BarcodeTile("Tel:",scannedBarcode.telephoneNumber))
 
             barcodeFeaturesList.add(BarcodeFeatures("Call",R.drawable.ic_baseline_callvector))
             barcodeFeaturesList.add(BarcodeFeatures("add to contacts",R.drawable.ic_baseline_add_tocontactvector))
             barcodeFeaturesList.add(BarcodeFeatures("Copy",R.drawable.ic_baseline_content_copy_vector))
             barcodeFeaturesList.add(BarcodeFeatures("share",R.drawable.ic_baseline_share_vector))
-if(!scannedBarcode.isSaved){
+         if(!scannedBarcode.isSaved && FeaturesOptions().sharedPreferences(requireContext())){
     GlobalScope.launch(Dispatchers.IO) {
         try{scannedBarcode.isSaved=true
 
@@ -213,7 +201,7 @@ if(!scannedBarcode.isSaved){
 }
 
         }
-        if(scannedBarcode.type=="TYPE_SMS"){
+        if(scannedBarcode.type==BarcodeTypes.TYPE_SMS.name){
             barcodeTileList.add(BarcodeTile("Tel:",scannedBarcode.phoneNumberOfSms))
             barcodeTileList.add(BarcodeTile("Message:",scannedBarcode.messageOfSms))
             barcodeFeaturesList.add(BarcodeFeatures("Call",R.drawable.ic_baseline_callvector))
@@ -222,7 +210,7 @@ if(!scannedBarcode.isSaved){
             barcodeFeaturesList.add(BarcodeFeatures("Copy", R.drawable.ic_baseline_content_copy_vector))
             barcodeFeaturesList.add(BarcodeFeatures("share",R.drawable.ic_baseline_share_vector))
 
-            if(!scannedBarcode.isSaved){
+            if(!scannedBarcode.isSaved && FeaturesOptions().sharedPreferences(requireContext())){
                 GlobalScope.launch(Dispatchers.IO) {
                     try{scannedBarcode.isSaved=true
                         BarcodeDatabase.getDatabase(requireContext()).barcodeDao().insertBarcode(
@@ -239,21 +227,23 @@ if(!scannedBarcode.isSaved){
             }
 
         }
-        if(scannedBarcode.type=="TYPE_TEXT"){
+        if(scannedBarcode.type==BarcodeTypes.TYPE_TEXT.name){
             barcodeTileList.add(BarcodeTile("Text:",scannedBarcode.textItem))
 
             barcodeFeaturesList.add(BarcodeFeatures("Open",R.drawable.web_search_4291))
             barcodeFeaturesList.add(BarcodeFeatures("Copy",R.drawable.ic_baseline_content_copy_vector))
             barcodeFeaturesList.add(BarcodeFeatures("share",R.drawable.ic_baseline_share_vector))
-          if(!scannedBarcode.isSaved){
-              Log.d("anmol", "lllllllllllllllllll")
+          if(!scannedBarcode.isSaved && FeaturesOptions().sharedPreferences(requireContext())){
+
               GlobalScope.launch(Dispatchers.IO) {
-                  try{
+                  try{scannedBarcode.isSaved=true
                       BarcodeDatabase.getDatabase(requireContext()).barcodeDao().insertBarcode(
                           BarcodeForDatabase(R.drawable.ic_baseline_textcontent,scannedBarcode,BarcodeTypes.TYPE_TEXT.nameofitem,System.currentTimeMillis(),true,false,scannedBarcode.textItem)
                       )
                   }catch (e:Exception){
-                      Log.d("roomsavingerror", e.toString())
+                      withContext(Dispatchers.Main){
+                          Toast.makeText(requireContext(),"Something Went Wrong In saving",Toast.LENGTH_SHORT).show()
+                      }
                   }
 
 
@@ -261,27 +251,29 @@ if(!scannedBarcode.isSaved){
           }
 
         }
-        if(scannedBarcode.type=="TYPE_CONTACT_INFO"){
+        if(scannedBarcode.type==BarcodeTypes.TYPE_CONTACT_INFO.name){
             barcodeTileList.add(BarcodeTile("Name:",scannedBarcode.name))
             barcodeTileList.add(BarcodeTile("address:",scannedBarcode.address))
             barcodeTileList.add(BarcodeTile("organization:",scannedBarcode.organization))
             barcodeTileList.add(BarcodeTile("email:",scannedBarcode.email))
             barcodeTileList.add(BarcodeTile("Tel:",scannedBarcode.telephoneNumber))
 
-
+            barcodeFeaturesList.add(BarcodeFeatures("Open",R.drawable.web_search_4291))
             barcodeFeaturesList.add(BarcodeFeatures("Send Email",R.drawable.ic_baseline_emailvector))
             barcodeFeaturesList.add(BarcodeFeatures("Call",R.drawable.ic_baseline_callvector))
             barcodeFeaturesList.add(BarcodeFeatures("add to contacts",R.drawable.ic_baseline_add_tocontactvector))
             barcodeFeaturesList.add(BarcodeFeatures("Copy",R.drawable.ic_baseline_content_copy_vector))
             barcodeFeaturesList.add(BarcodeFeatures("share",R.drawable.ic_baseline_share_vector))
-           if(!scannedBarcode.isSaved){
+           if(!scannedBarcode.isSaved && FeaturesOptions().sharedPreferences(requireContext())){
                GlobalScope.launch(Dispatchers.IO) {
                    try{scannedBarcode.isSaved=true
                        BarcodeDatabase.getDatabase(requireContext()).barcodeDao().insertBarcode(
                            BarcodeForDatabase(R.drawable.phone_book_contacts_svgrepo_com,scannedBarcode,BarcodeTypes.TYPE_CONTACT_INFO.nameofitem,System.currentTimeMillis(),true,false,scannedBarcode.name)
                        )
                    }catch (e:Exception){
-                       Log.d("roomsavingerror", e.toString())
+                       withContext(Dispatchers.Main){
+                           Toast.makeText(requireContext(),"Something Went Wrong In saving",Toast.LENGTH_SHORT).show()
+                       }
                    }
 
 
@@ -290,7 +282,7 @@ if(!scannedBarcode.isSaved){
 
 
         }
-       if(scannedBarcode.type=="TYPE_CALENDAR_EVENT"){
+       if(scannedBarcode.type==BarcodeTypes.TYPE_CALENDAR_EVENT.name){
             var startYear=scannedBarcode.startTimeEvent.subSequence(0,4)
             var startMonth=scannedBarcode.startTimeEvent.subSequence(4,6)
             var startDate=scannedBarcode.startTimeEvent.subSequence(6,8)
@@ -306,7 +298,7 @@ if(!scannedBarcode.isSaved){
             if(scannedBarcode.venueOfEvent!=""){
                 barcodeTileList.add(BarcodeTile("Venue Of Event:",scannedBarcode.venueOfEvent))
             }
-            if(scannedBarcode.endTimeEvent!=null){}
+
             barcodeTileList.add(BarcodeTile("Start Time","$startDate-$startMonth-$startYear-$startTime"))
             barcodeTileList.add(BarcodeTile("End Time:","$endDate-$endMonth-$endYear-$endTime"))
 
@@ -316,14 +308,16 @@ if(!scannedBarcode.isSaved){
             barcodeFeaturesList.add(BarcodeFeatures("Send Email", R.drawable.ic_baseline_emailvector))
             barcodeFeaturesList.add(BarcodeFeatures("Copy",R.drawable.ic_baseline_content_copy_vector))
             barcodeFeaturesList.add(BarcodeFeatures("share",R.drawable.ic_baseline_share_vector))
-              if(!scannedBarcode.isSaved){
+              if(!scannedBarcode.isSaved && FeaturesOptions().sharedPreferences(requireContext())){
           GlobalScope.launch(Dispatchers.IO) {
         try{scannedBarcode.isSaved=true
             BarcodeDatabase.getDatabase(requireContext()).barcodeDao().insertBarcode(
                 BarcodeForDatabase(R.drawable.ic_baseline_calendar_vector,scannedBarcode,BarcodeTypes.TYPE_CALENDAR_EVENT.nameofitem,System.currentTimeMillis(),true,false,scannedBarcode.descriptionOfEvent)
             )
         }catch (e:Exception){
-            Log.d("roomsavingerror", e.toString())
+            withContext(Dispatchers.Main){
+                Toast.makeText(requireContext(),"Something Went Wrong In saving",Toast.LENGTH_SHORT).show()
+            }
         }
 
 
@@ -335,7 +329,7 @@ if(!scannedBarcode.isSaved){
 
 
         val adapter=ScannedBarcodeContentAdapter()
-        val featuresAdapter=ScannedBarcodeFeaturesAdapter(object :FeatureClickHandler{
+        val featuresAdapter=ScannedBarcodeFeaturesAdapter(object : FeatureClickHandler {
             override fun click(barcodefeature: BarcodeFeatures) {
                  val type=barcodefeature.featuredesc
                 when(type){
@@ -350,7 +344,36 @@ if(!scannedBarcode.isSaved){
                             .call(scannedBarcode.phoneNumberOfSms,requireContext())
                     }
                     }
-                    "Open"->{ FeaturesOptions().openOnWeb(scannedBarcode.urlOfWebsite,requireContext())}
+                    "Connect to wifi"->{
+
+                        FeaturesOptions().connecttowifi(requireContext())
+                    }
+                    "Open"->{
+                        if(scannedBarcode.textItem.contains("whatsapp://")){
+                            FeaturesOptions().openWhatsApp(scannedBarcode.textItem.split("phone=")[1],requireContext())
+                        }
+                      else  if(scannedBarcode.textItem.contains("instagram://")){
+                            FeaturesOptions().openInstagram(scannedBarcode.textItem.split("username=")[1],requireContext())
+                        }
+                      else  if(scannedBarcode.urlOfWebsite!=""){
+                            FeaturesOptions().openOnWeb(scannedBarcode.urlOfWebsite,requireContext())
+                        }
+                        else if(scannedBarcode.messageOfSms!=""){
+                            FeaturesOptions().openOnWeb(scannedBarcode.messageOfSms,requireContext())
+                        }
+                        else if(scannedBarcode.textItem!=""){
+                            FeaturesOptions().openOnWeb(scannedBarcode.textItem,requireContext())
+                        }
+                        else if(scannedBarcode.address!=""){
+
+                        }
+                        else if(scannedBarcode.venueOfEvent!=""){
+                            FeaturesOptions().openOnWeb(scannedBarcode.venueOfEvent,requireContext())
+                        }
+
+
+
+                        }
                     "share"->{
                         GlobalScope.launch(Dispatchers.IO) {
 
@@ -384,7 +407,7 @@ if(!scannedBarcode.isSaved){
         scannedBarcodeFeaturesList.adapter=featuresAdapter
         scannedBarcodeItemContentList.adapter=adapter
         adapter.bindlist(barcodeTileList)
-            Log.d("checkingbug", "yes5")
+
 
         featuresAdapter.bindlist(barcodeFeaturesList)
 

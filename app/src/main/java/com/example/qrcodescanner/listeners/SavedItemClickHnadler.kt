@@ -1,4 +1,4 @@
-package com.example.qrcodescanner
+package com.example.qrcodescanner.listeners
 
 import com.example.qrcodescanner.models.BarcodeForDatabase
 import com.example.qrcodescanner.models.CustomBarcode

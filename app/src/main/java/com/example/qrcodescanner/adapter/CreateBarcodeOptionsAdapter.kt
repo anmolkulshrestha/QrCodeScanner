@@ -7,10 +7,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.qrcodescanner.CreateOptionClickHandler
-import com.example.qrcodescanner.FeatureClickHandler
+import com.example.qrcodescanner.listeners.CreateOptionClickHandler
 import com.example.qrcodescanner.R
-import com.example.qrcodescanner.models.BarcodeFeatures
 import com.example.qrcodescanner.models.CreateBarcodeOption
 
 class CreateBarcodeOptionsAdapter(clickHandler: CreateOptionClickHandler): RecyclerView.Adapter<RecyclerView.ViewHolder>() {

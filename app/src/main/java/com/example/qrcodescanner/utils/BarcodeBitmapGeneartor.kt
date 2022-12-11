@@ -14,7 +14,7 @@ class BarcodeBitmapGeneartor {
             val writer = MultiFormatWriter()
             val finalData: String = Uri.encode(data)
 
-            // Use 1 as the height of the matrix as this is a 1D Barcode.
+
             val bm: BitMatrix = writer.encode(data, com.google.zxing.BarcodeFormat.QR_CODE, 200, 200)
             val width = bm.width
             val height = bm.height

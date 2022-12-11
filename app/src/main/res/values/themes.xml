@@ -6,9 +6,9 @@
         <item name="colorOnSurface">#767677</item>
         <item name="colorSurface">#ffffff</item>
 
-        <item name="colorAccent">#7C4DFF</item>
-        <item name="colorPrimaryVariant">#FF5252</item>
-        <item name="colorOnPrimary">#E040FB</item>
+        <item name="colorAccent">#1b85e2</item>
+        <item name="colorPrimaryVariant">#1b85e2</item>
+        <item name="colorOnPrimary">#1b85e2</item>
 
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>

@@ -1,10 +1,10 @@
 package com.example.qrcodescanner.viewmodels
 
 import android.app.Application
-import android.util.Log
+
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+
 import androidx.lifecycle.asLiveData
 import com.example.qrcodescanner.database.BarcodeDao
 import com.example.qrcodescanner.database.BarcodeDatabase

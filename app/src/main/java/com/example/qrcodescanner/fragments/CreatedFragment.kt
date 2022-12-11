@@ -1,36 +1,32 @@
-package com.example.qrcodescanner
+package com.example.qrcodescanner.fragments
 
 import android.content.pm.ActivityInfo
 import android.os.Bundle
-import android.util.Log
+
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
+
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.selection.ItemKeyProvider
+
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.qrcodescanner.R
 import com.example.qrcodescanner.adapter.SavedItemAdapter
-import com.example.qrcodescanner.database.BarcodeDatabase
-import com.example.qrcodescanner.fragments.HistoryFragmentDirections
+
+import com.example.qrcodescanner.listeners.SavedItemClickHnadler
 import com.example.qrcodescanner.models.BarcodeForDatabase
 import com.example.qrcodescanner.models.CustomBarcode
 import com.example.qrcodescanner.viewmodels.CreatedHistoryViewModel
-import com.example.qrcodescanner.viewmodels.ScannedHistoryViewModel
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 
 class CreatedFragment : Fragment() {
 
     lateinit var createdBarcodeListRecyclerView: RecyclerView
     private   val createdBarcodesViewModel: CreatedHistoryViewModel by activityViewModels()
-    private val myAdapter: SavedItemAdapter = SavedItemAdapter(object:SavedItemClickHnadler{
+    private val myAdapter: SavedItemAdapter = SavedItemAdapter(object: SavedItemClickHnadler {
         override fun handleclickisfavourite(barcode: BarcodeForDatabase) {
 
             createdBarcodesViewModel.updateIsFavourite(barcode)
@@ -78,9 +74,7 @@ class CreatedFragment : Fragment() {
 
         createdBarcodesViewModel.createdBarcodesList.observe(viewLifecycleOwner, {
 
-            if(it.isNotEmpty()){
 
-            }
             myAdapter.bindlist(it)
 
 
