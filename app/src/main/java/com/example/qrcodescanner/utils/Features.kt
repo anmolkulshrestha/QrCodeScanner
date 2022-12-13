@@ -1,19 +1,17 @@
 package com.example.qrcodescanner.utils
 
 import android.content.*
-import android.content.Context.WIFI_SERVICE
+
 import android.graphics.Bitmap
 import android.net.Uri
-import android.net.wifi.WifiConfiguration
-import android.net.wifi.WifiManager
+
 import android.os.Build
 import android.provider.ContactsContract
 import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
-import androidx.camera.core.impl.utils.ContextUtil.getApplicationContext
-import androidx.core.content.ContentProviderCompat.requireContext
+
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.FileProvider
 import com.example.qrcodescanner.models.BarcodeTile
