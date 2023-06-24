@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:fillViewport="true"
     android:backgroundTint="@color/white"
-    tools:context=".fragments.GenerateBarcodeFragment">
+    tools:context="com.anmolsoftwaredeveloper12345.qrcodescanner.fragments.GenerateBarcodeFragment">
 
 
     <LinearLayout

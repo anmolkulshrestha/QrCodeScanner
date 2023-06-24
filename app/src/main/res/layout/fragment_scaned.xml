@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.ScanedFragment">
+    tools:context="com.anmolsoftwaredeveloper12345.qrcodescanner.fragments.ScanedFragment">
+
 
 
     <androidx.recyclerview.widget.RecyclerView

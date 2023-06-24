@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".fragments.SettingsFragment">
+    tools:context="com.anmolsoftwaredeveloper12345.qrcodescanner.fragments.SettingsFragment">
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="0dp"
@@ -20,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.211"
-        app:strokeColor="#98E498"
+        app:strokeColor="#21B6F8"
         app:strokeWidth="2dp">
 
         <LinearLayout
@@ -47,12 +47,41 @@
                 tools:layout_editor_absoluteY="187dp" />
 
             <TextView
+                android:id="@+id/rateus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="20dp"
+                android:layout_weight="1"
+                android:text="Rate Us"
+
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:layout_editor_absoluteY="332dp" />
+
+            <TextView
                 android:id="@+id/contactus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="20dp"
                 android:layout_weight="1"
                 android:text="Contact Us"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:layout_editor_absoluteY="332dp" />
+
+            <TextView
+                android:id="@+id/privacypolicy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="20dp"
+                android:layout_weight="1"
+                android:text="Privacy Policy"
                 android:textColor="@color/black"
                 android:textSize="20dp"
                 app:layout_constraintEnd_toEndOf="parent"

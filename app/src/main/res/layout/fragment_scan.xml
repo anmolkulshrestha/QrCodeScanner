@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.ScanFragment">
+    tools:context="com.anmolsoftwaredeveloper12345.qrcodescanner.fragments.ScanFragment">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -29,11 +29,11 @@
 
         </androidx.camera.view.PreviewView>
 
-        <com.example.qrcodescanner.utils.Viewexample
+        <com.anmolsoftwaredeveloper12345.qrcodescanner.utils.Viewexample
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        </com.example.qrcodescanner.utils.Viewexample>
+        </com.anmolsoftwaredeveloper12345.qrcodescanner.utils.Viewexample>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

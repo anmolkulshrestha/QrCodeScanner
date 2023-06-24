@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/background_material_cards"
     android:backgroundTint="@color/background_material_cards"
-    tools:context=".fragments.FinalGeneartedBarcodeFragment">
+    tools:context="com.anmolsoftwaredeveloper12345.qrcodescanner.fragments.FinalGeneartedBarcodeFragment">
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/save"

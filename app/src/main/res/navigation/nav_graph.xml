@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/scanFragment"
-        android:name="com.example.qrcodescanner.fragments.ScanFragment"
+        android:name="com.anmolsoftwaredeveloper12345.qrcodescanner.fragments.ScanFragment"
         android:label="scan"
         tools:layout="@layout/fragment_scan" >
         <action
@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.example.qrcodescanner.fragments.SettingsFragment"
+        android:name="com.anmolsoftwaredeveloper12345.qrcodescanner.fragments.SettingsFragment"
         android:label="Settings"
         tools:layout="@layout/fragment_settings" >
         <action
@@ -43,7 +43,7 @@
     </fragment>
     <fragment
         android:id="@+id/historyFragment"
-        android:name="com.example.qrcodescanner.fragments.HistoryFragment"
+        android:name="com.anmolsoftwaredeveloper12345.qrcodescanner.fragments.HistoryFragment"
         android:label="History"
         tools:layout="@layout/fragment_history" >
         <action
@@ -61,7 +61,7 @@
     </fragment>
     <fragment
         android:id="@+id/createFragment"
-        android:name="com.example.qrcodescanner.fragments.CreateFragment"
+        android:name="com.anmolsoftwaredeveloper12345.qrcodescanner.fragments.CreateFragment"
         android:label="Create Barcode"
         tools:layout="@layout/fragment_create" >
         <action
@@ -77,7 +77,7 @@
     </fragment>
     <fragment
         android:id="@+id/viewScannedBarcodeFragment"
-        android:name="com.example.qrcodescanner.fragments.ViewScannedBarcodeFragment"
+        android:name="com.anmolsoftwaredeveloper12345.qrcodescanner.fragments.ViewScannedBarcodeFragment"
         android:label="Barcode"
         tools:layout="@layout/fragment_view_scanned_barcode" >
         <action
@@ -89,7 +89,7 @@
             app:destination="@id/historyFragment" />
         <argument
             android:name="custombarcode"
-            app:argType="com.example.qrcodescanner.models.CustomBarcode" />
+            app:argType="com.anmolsoftwaredeveloper12345.qrcodescanner.models.CustomBarcode" />
         <action
             android:id="@+id/action_viewScannedBarcodeFragment_to_generateBarcodeFragment"
             app:destination="@id/generateBarcodeFragment" />
@@ -109,7 +109,7 @@
     </fragment>
     <fragment
         android:id="@+id/generateBarcodeFragment"
-        android:name="com.example.qrcodescanner.fragments.GenerateBarcodeFragment"
+        android:name="com.anmolsoftwaredeveloper12345.qrcodescanner.fragments.GenerateBarcodeFragment"
 
         tools:layout="@layout/fragment_generate_barcode" >
         <action
@@ -120,7 +120,7 @@
             app:destination="@id/viewScannedBarcodeFragment" />
         <argument
             android:name="createbarcodeoption"
-            app:argType="com.example.qrcodescanner.models.CreateBarcodeOption" />
+            app:argType="com.anmolsoftwaredeveloper12345.qrcodescanner.models.CreateBarcodeOption" />
         <action
             android:id="@+id/action_generateBarcodeFragment_to_finalGeneartedBarcodeFragment"
             app:destination="@id/finalGeneartedBarcodeFragment"
@@ -128,7 +128,7 @@
     </fragment>
     <fragment
         android:id="@+id/finalGeneartedBarcodeFragment"
-        android:name="com.example.qrcodescanner.fragments.FinalGeneartedBarcodeFragment"
+        android:name="com.anmolsoftwaredeveloper12345.qrcodescanner.fragments.FinalGeneartedBarcodeFragment"
         android:label="Save-Share"
         tools:layout="@layout/fragment_final_genearted_barcode" >
         <action
@@ -142,7 +142,7 @@
     </fragment>
     <fragment
         android:id="@+id/scanedFragment"
-        android:name="com.example.qrcodescanner.fragments.ScanedFragment"
+        android:name="com.anmolsoftwaredeveloper12345.qrcodescanner.fragments.ScanedFragment"
         android:label="Scanned History"
         tools:layout="@layout/fragment_scaned" >
         <action
@@ -151,7 +151,7 @@
     </fragment>
     <fragment
         android:id="@+id/createdFragment"
-        android:name="com.example.qrcodescanner.fragments.CreatedFragment"
+        android:name="com.anmolsoftwaredeveloper12345.qrcodescanner.fragments.CreatedFragment"
         android:label="Created History"
         tools:layout="@layout/fragment_created" >
         <action
@@ -160,7 +160,7 @@
     </fragment>
     <fragment
         android:id="@+id/favouritesFragment"
-        android:name="com.example.qrcodescanner.fragments.FavouritesFragment"
+        android:name="com.anmolsoftwaredeveloper12345.qrcodescanner.fragments.FavouritesFragment"
         android:label="Favourites"
         tools:layout="@layout/fragment_favourites" >
         <action
